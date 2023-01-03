@@ -51,3 +51,7 @@ label {
 body {
   font-family: "Roboto Condensed", sans-serif;
 }
+
+.rest-link:hover {
+  color: #20c997;
+}

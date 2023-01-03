@@ -1,5 +1,4 @@
-import React, { useEffect, useRef } from 'react';
-import NavBar from '../components/nav-bar';
+import React, { useEffect, useRef, useState } from 'react';
 const apiKey = 'AIzaSyCBRdqeJ86bHRgRmeiT_-iMdcriyLC1mtg';
 const mapApiJs = 'https://maps.googleapis.com/maps/api/js';
 
@@ -24,13 +23,14 @@ const initMapScript = () => {
 };
 
 export default function Home() {
-
+  const [locations, setLocations] = useState({ locations: ['no results'] });
   const searchInput = useRef(null);
 
   const onChangeAddress = autocomplete => {
-    // const place = autocomplete.getPlace();
-    // const longitude = place.geometry.viewport.Ia.lo;
-    // const latitude = place.geometry.viewport.Wa.lo;
+    const place = autocomplete.getPlace();
+    const longitude = place.geometry.viewport.Ia.lo;
+    const latitude = place.geometry.viewport.Wa.lo;
+    restaurantReq(longitude, latitude);
     // console.log('longitude', longitude);
     // console.log('latitude', latitude);
 
@@ -45,7 +45,8 @@ export default function Home() {
   };
 
   const reverseGeoCode = ({ latitude: lat, longitude: lng }) => {
-    // console.log(lat, lng);
+    restaurantReq(lng, lat);
+    // console.log('location:', lat, lng);
   };
 
   const findMyLocation = () => {
@@ -60,22 +61,92 @@ export default function Home() {
     initMapScript().then(() => { initAutoComplete(); });
   });
 
-  return (
+  const restaurantReq = (lng, lat) => {
 
-    <div>
-      <NavBar />
-      <div className='row text-center'>
-        <div className='col-full'>
-          <form>
-            <label htmlFor="address" className='block padding'>
-              Enter Address to view nearby restaurant menus
-            </label>
-            <input type="text" placeholder='Address' required className='address-input'
-              ref={searchInput} />
-            <i className="fa-sharp fa-solid fa-location-dot" onClick={findMyLocation} />
-          </form>
+    fetch(`https://trackapi.nutritionix.com/v2/locations?ll=${lat},${lng}&distance=30mi&limit=20`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-app-id': 'd980abba',
+        'x-app-key': 'daf43691d55b57da544d825ca7e33534'
+      }
+    })
+      .then(res => res.json())
+      .then(data => setLocations(data)
+      )
+      // eslint-disable-next-line no-console
+      .catch(err => console.log('Fetch Get error:', err));
+    // console.log(locations);
+  };
+
+  if (locations.locations.includes('no results')) {
+    const locArr = locations.locations.map((loc, index) => <h2 key={index}>{loc.name}</h2>);
+
+    return (
+
+      <div>
+        <div className='row text-center'>
+          <div className='col-full'>
+            <form>
+              <label htmlFor="address" className='block padding'>
+                Enter Address to view nearby restaurant menus
+              </label>
+              <input type="text" placeholder='Address' required className='address-input'
+                ref={searchInput} />
+              <i className="fa-sharp fa-solid fa-location-dot" onClick={findMyLocation} />
+            </form>
+            <div>
+              <div>{locArr}</div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+
+  } else if (locations.locations.length > 1) {
+    const locSetup = (location, index) => {
+      const miles = location.distance_km / 0.621371;
+      if (index % 2 === 0) {
+        return <div className='col-half' key={index}>
+          <h2><a href={location.website} target="_blank" rel="noreferrer" className='rest-link'>{location.name}</a></h2>
+          <h3> Link to under 500 calorie menu</h3>
+          <h4>{location.address} {location.city} {location.zip} {location.state}</h4>
+          <h4> {miles.toFixed(2) } miles away </h4>
+        </div>;
+      } else {
+        return <div className='col-half' key={index}>
+          <h2><a href={location.website} target="_blank" rel="noreferrer" className='rest-link'>{location.name}</a></h2>
+          <h3> Link to under 500 calorie menu</h3>
+          <h4>{location.address} {location.city} {location.zip} {location.state}</h4>
+          <h4> {miles.toFixed(2)} miles away </h4>
+        </div>;
+      }
+    };
+
+    const locArr = locations.locations.map(locSetup);
+
+    return (
+
+      <div>
+        <div className='row text-center'>
+          <div className='col-full'>
+            <form>
+              <label htmlFor="address" className='block padding'>
+                Enter Address to view nearby restaurant menus
+              </label>
+              <input type="text" placeholder='Address' required className='address-input'
+                ref={searchInput} />
+              <i className="fa-sharp fa-solid fa-location-dot" onClick={findMyLocation} />
+            </form>
+            <div>
+              <h1>Nearby Restaurants</h1>
+              <div className='row'>{locArr}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
+  }
+
 }
