@@ -31,5 +31,6 @@
 @media screen and (max-width: 768px) {
   .col-half {
     flex-basis: 100%;
+    text-align: center;
   }
 }

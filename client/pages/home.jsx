@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import AppContext from '../lib/app-context';
-import parseRoute from '../lib/parse-route';
+// import parseRoute from '../lib/parse-route';
 const apiKey = 'AIzaSyCBRdqeJ86bHRgRmeiT_-iMdcriyLC1mtg';
 const mapApiJs = 'https://maps.googleapis.com/maps/api/js';
 
@@ -63,7 +63,6 @@ export default function Home() {
   });
 
   const ContextMenuId = id => {
-    context.route = parseRoute('home');
     context.updateMenuId(id);
     // console.log('context', context);
   };
@@ -117,7 +116,7 @@ export default function Home() {
       if (index % 2 === 0) {
         return <div className='col-half' key={index}>
           <h2><a href={location.website} target="_blank" rel="noreferrer" className='rest-link'>{location.name}</a></h2>
-          <h3><button onClick={() => { ContextMenuId(location.brand_id); }} className='menu-btn'>
+          <h3><button onClick={() => { ContextMenuId(location.name); }} className='menu-btn'>
             Link to items on menu under 500 calories</button></h3>
           <h4>{location.address} {location.city} {location.zip} {location.state}</h4>
           <h4> {miles.toFixed(2) } miles away </h4>
@@ -126,7 +125,7 @@ export default function Home() {
       } else {
         return <div className='col-half' key={index}>
           <h2><a href={location.website} target="_blank" rel="noreferrer" className='rest-link'>{location.name}</a></h2>
-          <h3> <button onClick={() => { ContextMenuId(location.brand_id); }} className='menu-btn'>
+          <h3> <button onClick={() => { ContextMenuId(location.name); }} className='menu-btn'>
             Link to items on menu under 500 calories</button></h3>
           <h4>{location.address} {location.city} {location.zip} {location.state}</h4>
           <h4> {miles.toFixed(2)} miles away </h4>

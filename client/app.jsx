@@ -24,8 +24,7 @@ export default class App extends React.Component {
     const { route } = this.state;
     if (route.path === '') {
       return <Home />;
-    }
-    if (route.path === 'menu') {
+    } else {
       return <MenuPage />;
     }
   }
@@ -42,6 +41,7 @@ export default class App extends React.Component {
       menuId,
       updateMenuId
     };
+    // console.log('app', contextValue);
     return (
       <AppContext.Provider value={contextValue}>
         <div>
