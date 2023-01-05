@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
+import AppContext from '../lib/app-context';
+import parseRoute from '../lib/parse-route';
 const apiKey = 'AIzaSyCBRdqeJ86bHRgRmeiT_-iMdcriyLC1mtg';
 const mapApiJs = 'https://maps.googleapis.com/maps/api/js';
 
@@ -25,14 +27,14 @@ const initMapScript = () => {
 export default function Home() {
   const [locations, setLocations] = useState({ locations: ['no results'] });
   const searchInput = useRef(null);
-
+  const context = useContext(AppContext);
+  // console.log('hello', context);
   const onChangeAddress = autocomplete => {
+
     const place = autocomplete.getPlace();
     const longitude = place.geometry.viewport.Ia.lo;
     const latitude = place.geometry.viewport.Wa.lo;
     restaurantReq(longitude, latitude);
-    // console.log('longitude', longitude);
-    // console.log('latitude', latitude);
 
   };
 
@@ -46,7 +48,6 @@ export default function Home() {
 
   const reverseGeoCode = ({ latitude: lat, longitude: lng }) => {
     restaurantReq(lng, lat);
-    // console.log('location:', lat, lng);
   };
 
   const findMyLocation = () => {
@@ -61,6 +62,11 @@ export default function Home() {
     initMapScript().then(() => { initAutoComplete(); });
   });
 
+  const ContextMenuId = id => {
+    context.route = parseRoute('home');
+    context.updateMenuId(id);
+    // console.log('context', context);
+  };
   const restaurantReq = (lng, lat) => {
 
     fetch(`https://trackapi.nutritionix.com/v2/locations?ll=${lat},${lng}&distance=30mi&limit=20`, {
@@ -79,12 +85,13 @@ export default function Home() {
     // console.log(locations);
   };
 
-  if (locations.locations.includes('no results')) {
+  if (locations.locations.includes('no results') || locations.locations.length === 0) {
     const locArr = locations.locations.map((loc, index) => <h2 key={index}>{loc.name}</h2>);
-
     return (
 
       <div>
+        <div className='text-center'> <h3>The purpose of this website is to help you lose weight by showing you
+          meals that are under 500 calories at the closest fast food locations to you.</h3></div>
         <div className='row text-center'>
           <div className='col-full'>
             <form>
@@ -104,30 +111,36 @@ export default function Home() {
     );
 
   } else if (locations.locations.length > 1) {
-    const locSetup = (location, index) => {
+    const LocSetup = (location, index) => {
+
       const miles = location.distance_km / 0.621371;
       if (index % 2 === 0) {
         return <div className='col-half' key={index}>
           <h2><a href={location.website} target="_blank" rel="noreferrer" className='rest-link'>{location.name}</a></h2>
-          <h3> Link to under 500 calorie menu</h3>
+          <h3><button onClick={() => { ContextMenuId(location.brand_id); }} className='menu-btn'>
+            Link to items on menu under 500 calories</button></h3>
           <h4>{location.address} {location.city} {location.zip} {location.state}</h4>
           <h4> {miles.toFixed(2) } miles away </h4>
-        </div>;
+        </div>
+        ;
       } else {
         return <div className='col-half' key={index}>
           <h2><a href={location.website} target="_blank" rel="noreferrer" className='rest-link'>{location.name}</a></h2>
-          <h3> Link to under 500 calorie menu</h3>
+          <h3> <button onClick={() => { ContextMenuId(location.brand_id); }} className='menu-btn'>
+            Link to items on menu under 500 calories</button></h3>
           <h4>{location.address} {location.city} {location.zip} {location.state}</h4>
           <h4> {miles.toFixed(2)} miles away </h4>
         </div>;
       }
     };
 
-    const locArr = locations.locations.map(locSetup);
+    const locArr = locations.locations.map(LocSetup);
 
     return (
 
       <div>
+        <div className='text-center'> <h3>The purpose of this website is to help you lose weight by showing you
+          meals that are under 500 calories at the closest fast food locations to you.</h3></div>
         <div className='row text-center'>
           <div className='col-full'>
             <form>

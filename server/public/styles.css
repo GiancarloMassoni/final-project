@@ -52,6 +52,12 @@ body {
   font-family: "Roboto Condensed", sans-serif;
 }
 
+.rest-link {
+  background-color: #20c997;
+  padding: 10px;
+}
+
 .rest-link:hover {
   color: #20c997;
+  background-color: black;
 }
