@@ -61,3 +61,12 @@ body {
   color: #20c997;
   background-color: black;
 }
+
+.cal-table {
+  border-bottom: 1px solid #dee2e6;
+  padding: 5px;
+}
+
+.border {
+  border: 1px solid #dee2e6;
+}

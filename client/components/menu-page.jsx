@@ -14,8 +14,8 @@ export default class MenuPage extends React.Component {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'x-app-id': 'd980abba',
-        'x-app-key': 'daf43691d55b57da544d825ca7e33534'
+        'x-app-id': process.env.REACT_APP_X_ID_API_KEY,
+        'x-app-key': process.env.REACT_APP_X_KEY_API_KEY
       }
 
     })
@@ -38,7 +38,7 @@ export default class MenuPage extends React.Component {
       if (item.serving_weight_grams === null) {
         item.serving_weight_grams = 1;
         return <div key={index} className='col-half'>
-          <div className='row'>
+          <div className='row border'>
             <div className='col-full'>
               <h2 className='text-center'>{item.food_name}</h2>
             </div>
@@ -46,11 +46,11 @@ export default class MenuPage extends React.Component {
               <img src={item.photo.thumb} alt="" />
             </div>
             <div className='col-half'>
-              <p>Serving Size {item.serving_weight_grams}</p>
-              <p> Calories {item.nf_calories}</p>
-              <p>Protein {item.full_nutrients[0].value}g</p>
-              <p>Fat {item.full_nutrients[1].value}g</p>
-              <p>Carbohydrates {item.full_nutrients[2].value}g</p>
+              <p className='cal-table'>Serving Size {item.serving_weight_grams}</p>
+              <p className='cal-table'> Calories {item.nf_calories}</p>
+              <p className='cal-table'>Protein {item.full_nutrients[0].value}g</p>
+              <p className='cal-table'>Fat {item.full_nutrients[1].value}g</p>
+              <p className='cal-table'>Carbohydrates {item.full_nutrients[2].value}g</p>
             </div>
           </div>
         </div>;
@@ -58,7 +58,7 @@ export default class MenuPage extends React.Component {
 
       if (index % 2 === 0) {
         return <div key={index} className='col-half'>
-          <div className='row'>
+          <div className='row border'>
             <div className='col-full'>
               <h2 className='text-center'>{item.food_name}</h2>
             </div>
@@ -66,18 +66,18 @@ export default class MenuPage extends React.Component {
               <img src={item.photo.thumb} alt="" />
             </div>
             <div className='col-half'>
-              <p>Serving Size {item.serving_weight_grams} grams</p>
-              <p> Calories {item.nf_calories}</p>
-              <p>Protein {item.full_nutrients[0].value}g</p>
-              <p>Fat {item.full_nutrients[1].value}g</p>
-              <p>Carbohydrates {item.full_nutrients[2].value}g</p>
+              <p className='cal-table'>Serving Size {item.serving_weight_grams} grams</p>
+              <p className='cal-table'> Calories {item.nf_calories}</p>
+              <p className='cal-table'>Protein {item.full_nutrients[0].value}g</p>
+              <p className='cal-table'>Fat {item.full_nutrients[1].value}g</p>
+              <p className='cal-table'>Carbohydrates {item.full_nutrients[2].value}g</p>
             </div>
           </div>
         </div>
         ;
       } else {
         return <div key={index} className='col-half'>
-          <div className='row'>
+          <div className='row border' >
             <div className='col-full'>
               <h2 className='text-center'>{item.food_name}</h2>
             </div>

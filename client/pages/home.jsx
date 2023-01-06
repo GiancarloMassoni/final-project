@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import AppContext from '../lib/app-context';
 // import parseRoute from '../lib/parse-route';
-const apiKey = 'AIzaSyCBRdqeJ86bHRgRmeiT_-iMdcriyLC1mtg';
+const apiKey = process.env.REACT_APP_API_KEY;
 const mapApiJs = 'https://maps.googleapis.com/maps/api/js';
 
 function loadAsyncScript(src) {
@@ -72,8 +72,8 @@ export default function Home() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'x-app-id': 'd980abba',
-        'x-app-key': 'daf43691d55b57da544d825ca7e33534'
+        'x-app-id': process.env.REACT_APP_X_ID_API_KEY,
+        'x-app-key': process.env.REACT_APP_X_KEY_API_KEY
       }
     })
       .then(res => res.json())
