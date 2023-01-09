@@ -41,7 +41,6 @@ export default class App extends React.Component {
       menuId,
       updateMenuId
     };
-    // console.log('app', contextValue);
     return (
       <AppContext.Provider value={contextValue}>
         <div>

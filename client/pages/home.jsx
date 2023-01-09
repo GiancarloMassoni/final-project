@@ -89,8 +89,8 @@ export default function Home() {
     return (
 
       <div>
-        <div className='text-center'> <h3>The purpose of this website is to help you lose weight by showing you
-          meals that are under 500 calories at the closest fast food locations to you.</h3></div>
+        <div className='text-center home-header'> <p>The purpose of this website is to help you lose weight by showing you
+          meals that are under 500 calories at the closest fast food locations to you.</p></div>
         <div className='row text-center'>
           <div className='col-full'>
             <form>
@@ -115,7 +115,7 @@ export default function Home() {
       const miles = location.distance_km / 0.621371;
       if (index % 2 === 0) {
         return <div className='col-half' key={index}>
-          <h2><a href={location.website} target="_blank" rel="noreferrer" className='rest-link'>{location.name}</a></h2>
+          <h2 className='rest-btm'><a href={location.website} target="_blank" rel="noreferrer" className='rest-link'>{location.name}</a></h2>
           <h3><button onClick={() => { ContextMenuId(location.name); }} className='menu-btn'>
             Link to items on menu under 500 calories</button></h3>
           <h4>{location.address} {location.city} {location.zip} {location.state}</h4>
@@ -124,7 +124,7 @@ export default function Home() {
         ;
       } else {
         return <div className='col-half' key={index}>
-          <h2><a href={location.website} target="_blank" rel="noreferrer" className='rest-link'>{location.name}</a></h2>
+          <h2 className='rest-btm'><a href={location.website} target="_blank" rel="noreferrer" className='rest-link'>{location.name}</a></h2>
           <h3> <button onClick={() => { ContextMenuId(location.name); }} className='menu-btn'>
             Link to items on menu under 500 calories</button></h3>
           <h4>{location.address} {location.city} {location.zip} {location.state}</h4>
