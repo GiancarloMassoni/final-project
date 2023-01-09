@@ -65,7 +65,7 @@ export default class MenuPage extends React.Component {
       .then(res => res.json())
       .then(data => {
         this.setState({ restaurantItems: data.branded });
-        // console.log('datacommon', data);
+
       })
       // eslint-disable-next-line no-console
       .catch(err => console.log('Fetch Get error:', err));
