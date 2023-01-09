@@ -146,12 +146,11 @@ export default class MenuPage extends React.Component {
 
   render() {
     const { menuId } = this.context;
-    // console.log('menuId', this.state.restaurantItems);
 
     return (
       <div className='row'>
         <div className='col-full text-center'>
-          <h1> {menuId}</h1>
+          <h1 className='menu-id'> {menuId}</h1>
           <h2>Menu Items under 500 Calories</h2>
           <h2>All calories per serving size</h2>
           {this.favButton()}

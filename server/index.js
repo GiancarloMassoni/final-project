@@ -16,10 +16,6 @@ const app = express();
 app.use(jsonMiddleware);
 app.use(staticMiddleware);
 
-app.get('/api/hello', (req, res) => {
-  res.json({ hello: 'world' });
-});
-
 app.post('/api/restaurants', (req, res) => {
   const sql = `
   insert into "restaurants" ("restaurant name", "userId")

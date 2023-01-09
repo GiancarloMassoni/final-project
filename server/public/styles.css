@@ -108,3 +108,12 @@ body {
   box-shadow: 0 6px 8px 01px #888;
   font-size: 1.5rem;
 }
+
+img {
+  object-fit: contain;
+  width: 100%;
+}
+
+.menu-id {
+  font-size: 3.5rem;
+}
