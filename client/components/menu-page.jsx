@@ -5,8 +5,51 @@ export default class MenuPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      restaurantItems: []
+      restaurantItems: [],
+      addedFav: false,
+      currUser: 1
     };
+    this.addFavRest = this.addFavRest.bind(this);
+  }
+
+  addFavRest() {
+    const { menuId } = this.context;
+    if (this.state.addedFav === false) {
+
+      fetch('/api/restaurants', {
+        method: 'POST',
+        body: JSON.stringify({ restaurant: menuId, currUser: this.state.currUser }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+
+      })
+        .then(res => res.json())
+        .then(data => {
+          this.setState({ addedFav: true });
+        })
+        .catch(err => console.error('Fetch failed!', err))
+      ;
+    } else if (this.state.addedFav === true) {
+      fetch(`/api/restaurants/${menuId}`, {
+        method: 'DELETE'
+      })
+        .then(res => res)
+        .then(data => {
+          this.setState({ addedFav: false });
+        })
+        .catch(err => console.error('Delete failed!', err))
+      ;
+    }
+
+  }
+
+  favButton() {
+    if (this.state.addedFav === false) {
+      return <button className='fav-btn' onClick={this.addFavRest}>Favorite</button>;
+    } else {
+      return <button className='fav-btn-on' onClick={this.addFavRest}>Favorited</button>;
+    }
   }
 
   componentDidMount() {
@@ -22,7 +65,7 @@ export default class MenuPage extends React.Component {
       .then(res => res.json())
       .then(data => {
         this.setState({ restaurantItems: data.branded });
-        // console.log('datacommon', data);
+
       })
       // eslint-disable-next-line no-console
       .catch(err => console.log('Fetch Get error:', err));
@@ -103,14 +146,14 @@ export default class MenuPage extends React.Component {
 
   render() {
     const { menuId } = this.context;
-    // console.log('menuId', this.state.restaurantItems);
 
     return (
       <div className='row'>
         <div className='col-full text-center'>
-          <h1> {menuId}</h1>
+          <h1 className='menu-id'> {menuId}</h1>
           <h2>Menu Items under 500 Calories</h2>
           <h2>All calories per serving size</h2>
+          {this.favButton()}
         </div>
         <div className='row'>
           {this.renderItems()}

@@ -5,3 +5,41 @@ set client_min_messages to warning;
 drop schema "public" cascade;
 
 create schema "public";
+
+CREATE TABLE "public"."users" (
+	"userId" serial NOT NULL,
+	"username" TEXT NOT NULL,
+	"hashedPassword" TEXT NOT NULL,
+	CONSTRAINT "users_pk" PRIMARY KEY ("userId")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public"."restaurants" (
+	"userId" serial NOT NULL,
+	"restaurant name" TEXT NOT NULL,
+	"restaurantId" serial NOT NULL,
+	CONSTRAINT "restaurants_pk" PRIMARY KEY ("restaurantId")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public"."meals" (
+	"meal name" TEXT NOT NULL,
+	"restaurantId" integer NOT NULL,
+	"mealId" integer NOT NULL,
+	CONSTRAINT "meals_pk" PRIMARY KEY ("mealId")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+
+ALTER TABLE "restaurants" ADD CONSTRAINT "restaurants_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
+
+ALTER TABLE "meals" ADD CONSTRAINT "meals_fk0" FOREIGN KEY ("restaurantId") REFERENCES "restaurants"("restaurantId");
