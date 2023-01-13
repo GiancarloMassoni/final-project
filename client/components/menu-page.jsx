@@ -6,15 +6,16 @@ export default class MenuPage extends React.Component {
     super(props);
     this.state = {
       restaurantItems: [],
-      addedFav: false,
+      favMeals: [''],
+      addedFavRestaurant: false,
       currUser: 1
     };
-    this.addFavRest = this.addFavRest.bind(this);
+    this.addedFavRestaurant = this.addedFavRestaurant.bind(this);
   }
 
-  addFavRest() {
+  addedFavRestaurant() {
     const { menuId } = this.context;
-    if (this.state.addedFav === false) {
+    if (this.state.addedFavRestaurant === false) {
 
       fetch('/api/restaurants', {
         method: 'POST',
@@ -26,17 +27,17 @@ export default class MenuPage extends React.Component {
       })
         .then(res => res.json())
         .then(data => {
-          this.setState({ addedFav: true });
+          this.setState({ addedFavRestaurant: true });
         })
         .catch(err => console.error('Fetch failed!', err))
       ;
-    } else if (this.state.addedFav === true) {
+    } else if (this.state.addedFavRestaurant === true) {
       fetch(`/api/restaurants/${menuId}`, {
         method: 'DELETE'
       })
         .then(res => res)
         .then(data => {
-          this.setState({ addedFav: false });
+          this.setState({ addedFavRestaurant: false });
         })
         .catch(err => console.error('Delete failed!', err))
       ;
@@ -44,11 +45,19 @@ export default class MenuPage extends React.Component {
 
   }
 
-  favButton() {
-    if (this.state.addedFav === false) {
-      return <button className='fav-btn' onClick={this.addFavRest}>Favorite</button>;
+  favButtonRestaurant() {
+    if (this.state.addedFavRestaurant === false) {
+      return <button className='fav-btn' onClick={this.addedFavRestaurant}>Favorite</button>;
     } else {
-      return <button className='fav-btn-on' onClick={this.addFavRest}>Favorited</button>;
+      return <button className='fav-btn-on' onClick={this.addedFavRestaurant}>Favorited</button>;
+    }
+  }
+
+  favButtonMeal(food) {
+    if (this.state.favMeals.includes(food)) {
+      return <button className='fav-btn-on-meal' onClick={this.addedFavMeal}>Favorited</button>;
+    } else {
+      return <button className='fav-btn-meal' onClick={this.addedFavMeal}>Favorite</button>;
     }
   }
 
@@ -89,6 +98,7 @@ export default class MenuPage extends React.Component {
               <img src={item.photo.thumb} alt="" />
             </div>
             <div className='col-half'>
+              {this.favButtonMeal(item.food_name)}
               <p className='cal-table'>Serving Size {item.serving_weight_grams}</p>
               <p className='cal-table'> Calories {item.nf_calories}</p>
               <p className='cal-table'>Protein {item.full_nutrients[0].value}g</p>
@@ -109,6 +119,7 @@ export default class MenuPage extends React.Component {
               <img src={item.photo.thumb} alt="" />
             </div>
             <div className='col-half'>
+              {this.favButtonMeal(item.food_name)}
               <p className='cal-table'>Serving Size {item.serving_weight_grams} grams</p>
               <p className='cal-table'> Calories {item.nf_calories}</p>
               <p className='cal-table'>Protein {item.full_nutrients[0].value}g</p>
@@ -128,6 +139,7 @@ export default class MenuPage extends React.Component {
               <img src={item.photo.thumb} alt="" />
             </div>
             <div className='col-half'>
+              {this.favButtonMeal(item.food_name)}
               <p className='cal-table'>Serving Size {item.serving_weight_grams} grams</p>
               <p className='cal-table'> Calories {item.nf_calories}</p>
               <p className='cal-table'>Protein {item.full_nutrients[0].value}g</p>
@@ -153,7 +165,7 @@ export default class MenuPage extends React.Component {
           <h1 className='menu-id'> {menuId}</h1>
           <h2>Menu Items under 500 Calories</h2>
           <h2>All calories per serving size</h2>
-          {this.favButton()}
+          {this.favButtonRestaurant()}
         </div>
         <div className='row'>
           {this.renderItems()}
