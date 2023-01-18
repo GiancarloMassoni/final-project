@@ -6,7 +6,7 @@ export default class MenuPage extends React.Component {
     super(props);
     this.state = {
       restaurantItems: [],
-      favMeals: [''],
+      favMeals: [],
       addedFavRestaurant: false,
       currUser: 1
     };
@@ -14,12 +14,11 @@ export default class MenuPage extends React.Component {
   }
 
   addedFavRestaurant() {
-    const { menuId } = this.context;
     if (this.state.addedFavRestaurant === false) {
 
       fetch('/api/restaurants', {
         method: 'POST',
-        body: JSON.stringify({ restaurant: menuId, currUser: this.state.currUser }),
+        body: JSON.stringify({ restaurant: this.props.menuId, currUser: this.state.currUser }),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -32,7 +31,7 @@ export default class MenuPage extends React.Component {
         .catch(err => console.error('Fetch failed!', err))
       ;
     } else if (this.state.addedFavRestaurant === true) {
-      fetch(`/api/restaurants/${menuId}`, {
+      fetch(`/api/restaurants/${this.props.menuId}`, {
         method: 'DELETE'
       })
         .then(res => res)
@@ -43,6 +42,23 @@ export default class MenuPage extends React.Component {
       ;
     }
 
+  }
+
+  addedFavMeal(meal) {
+    // console.log('meal: ', meal);
+    if (!this.state.favMeals) {
+      fetch('/api/meals', {
+        method: 'POST',
+        body: JSON.stringify({ mealName: meal, restaurantId: this.props.menuId })
+      })
+        .then(res => res.json())
+        .then(data => {
+
+          // console.log(this.state.favMeals);
+
+        })
+        .catch(err => console.error('Fetch failed!', err));
+    }
   }
 
   favButtonRestaurant() {
@@ -62,7 +78,7 @@ export default class MenuPage extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`https://trackapi.nutritionix.com/v2/search/instant/?query=${this.context.menuId}&detailed=true`, {
+    fetch(`https://trackapi.nutritionix.com/v2/search/instant/?query=${this.props.menuId}&detailed=true`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -98,7 +114,9 @@ export default class MenuPage extends React.Component {
               <img src={item.photo.thumb} alt="" />
             </div>
             <div className='col-half'>
-              {this.favButtonMeal(item.food_name)}
+              <div className="text-right">
+                {this.favButtonMeal(item.food_name)}
+              </div>
               <p className='cal-table'>Serving Size {item.serving_weight_grams}</p>
               <p className='cal-table'> Calories {item.nf_calories}</p>
               <p className='cal-table'>Protein {item.full_nutrients[0].value}g</p>
@@ -119,7 +137,9 @@ export default class MenuPage extends React.Component {
               <img src={item.photo.thumb} alt="" />
             </div>
             <div className='col-half'>
-              {this.favButtonMeal(item.food_name)}
+              <div className="text-right">
+                {this.favButtonMeal(item.food_name)}
+              </div>
               <p className='cal-table'>Serving Size {item.serving_weight_grams} grams</p>
               <p className='cal-table'> Calories {item.nf_calories}</p>
               <p className='cal-table'>Protein {item.full_nutrients[0].value}g</p>
@@ -157,12 +177,10 @@ export default class MenuPage extends React.Component {
   }
 
   render() {
-    const { menuId } = this.context;
-
     return (
       <div className='row'>
         <div className='col-full text-center'>
-          <h1 className='menu-id'> {menuId}</h1>
+          <h1 className='menu-id'> {this.props.menuId}</h1>
           <h2>Menu Items under 500 Calories</h2>
           <h2>All calories per serving size</h2>
           {this.favButtonRestaurant()}

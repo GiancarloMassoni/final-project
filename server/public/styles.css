@@ -128,3 +128,19 @@ img {
   box-shadow: 0 6px 8px 01px #888;
   font-size: 1rem;
 }
+
+.fav-btn-meal-on {
+  background-color: #20c997;
+  border: solid 2px #20c997;
+  color: white;
+  border-radius: 7px;
+  padding: 4px;
+  cursor: pointer;
+  box-shadow: 0 6px 8px 01px #888;
+  font-size: 1rem;
+}
+
+.fav-btn-meal:hover {
+  background-color: #20c997;
+  color: white;
+}

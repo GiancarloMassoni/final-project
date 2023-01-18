@@ -24,8 +24,9 @@ export default class App extends React.Component {
     const { route } = this.state;
     if (route.path === '') {
       return <Home />;
-    } else {
-      return <MenuPage />;
+    } else if (route.path === 'restaurants') {
+      const menuId = route.params.get('restaurant');
+      return <MenuPage menuId={menuId}/>;
     }
   }
 

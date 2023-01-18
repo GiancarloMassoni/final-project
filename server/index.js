@@ -58,6 +58,26 @@ app.delete('/api/restaurants/:restaurantName', (req, res) => {
     });
 });
 
+app.post('/api/meals', (req, res) => {
+  const sql = `
+  insert into "meals" ("meal name", "restaurantId")
+  values ($1, $2)
+  returning *
+  `;
+  const values = [req.body.mealName, req.body.restaurantId];
+
+  db.query(sql, values)
+    .then(result => {
+      res.status(201);
+      res.json(result.rows);
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).json({ error: 'An unexpected error has occured' });
+    }
+    );
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
