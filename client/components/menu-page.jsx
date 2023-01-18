@@ -14,11 +14,16 @@ export default class MenuPage extends React.Component {
   }
 
   addedFavRestaurant() {
+    const id = this.state.restaurantItems[0].nix_brand_id;
     if (this.state.addedFavRestaurant === false) {
 
       fetch('/api/restaurants', {
         method: 'POST',
-        body: JSON.stringify({ restaurant: this.props.menuId, currUser: this.state.currUser }),
+        body: JSON.stringify({
+          restaurant: this.props.menuId,
+          currUser: this.state.currUser,
+          id
+        }),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -31,7 +36,7 @@ export default class MenuPage extends React.Component {
         .catch(err => console.error('Fetch failed!', err))
       ;
     } else if (this.state.addedFavRestaurant === true) {
-      fetch(`/api/restaurants/${this.props.menuId}`, {
+      fetch(`/api/restaurants/${id}`, {
         method: 'DELETE'
       })
         .then(res => res)
@@ -45,19 +50,48 @@ export default class MenuPage extends React.Component {
   }
 
   addedFavMeal(meal) {
-    // console.log('meal: ', meal);
-    if (!this.state.favMeals) {
+    const id = meal.nix_brand_id;
+    const mealName = meal.food_name;
+    const servingSize = meal.serving_weight_grams;
+    const calories = meal.nf_calories;
+    const protein = meal.full_nutrients[0].value;
+    const fat = meal.full_nutrients[1].value;
+    const carbohydrates = meal.full_nutrients[2].value;
+    if (!this.state.favMeals.includes(meal)) {
       fetch('/api/meals', {
         method: 'POST',
-        body: JSON.stringify({ mealName: meal, restaurantId: this.props.menuId })
+        body: JSON.stringify(
+          {
+            mealName,
+            id,
+            servingSize,
+            calories,
+            protein,
+            fat,
+            carbohydrates
+          }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
         .then(res => res.json())
         .then(data => {
-
-          // console.log(this.state.favMeals);
+          const newMeals = this.state.favMeals.concat(meal);
+          this.setState({ favMeals: newMeals });
 
         })
         .catch(err => console.error('Fetch failed!', err));
+    } else if (this.state.favMeals.includes(meal)) {
+      fetch(`/api/meals/${mealName}`, {
+        method: 'DELETE'
+      })
+        .then(res => res)
+        .then(data => {
+          const newMeals = this.state.favMeals.filter(el => el.food_name !== mealName);
+          this.setState({ favMeals: newMeals });
+        })
+        .catch(err => console.error('Delete failed!', err))
+      ;
     }
   }
 
@@ -71,9 +105,9 @@ export default class MenuPage extends React.Component {
 
   favButtonMeal(food) {
     if (this.state.favMeals.includes(food)) {
-      return <button className='fav-btn-on-meal' onClick={this.addedFavMeal}>Favorited</button>;
+      return <button className='fav-btn-on-meal' onClick={event => this.addedFavMeal(food)}>Favorited</button>;
     } else {
-      return <button className='fav-btn-meal' onClick={this.addedFavMeal}>Favorite</button>;
+      return <button className='fav-btn-meal' onClick={event => this.addedFavMeal(food)}>Favorite</button>;
     }
   }
 
@@ -115,7 +149,7 @@ export default class MenuPage extends React.Component {
             </div>
             <div className='col-half'>
               <div className="text-right">
-                {this.favButtonMeal(item.food_name)}
+                {this.favButtonMeal(item)}
               </div>
               <p className='cal-table'>Serving Size {item.serving_weight_grams}</p>
               <p className='cal-table'> Calories {item.nf_calories}</p>
@@ -138,7 +172,7 @@ export default class MenuPage extends React.Component {
             </div>
             <div className='col-half'>
               <div className="text-right">
-                {this.favButtonMeal(item.food_name)}
+                {this.favButtonMeal(item)}
               </div>
               <p className='cal-table'>Serving Size {item.serving_weight_grams} grams</p>
               <p className='cal-table'> Calories {item.nf_calories}</p>
@@ -159,7 +193,7 @@ export default class MenuPage extends React.Component {
               <img src={item.photo.thumb} alt="" />
             </div>
             <div className='col-half'>
-              {this.favButtonMeal(item.food_name)}
+              {this.favButtonMeal(item)}
               <p className='cal-table'>Serving Size {item.serving_weight_grams} grams</p>
               <p className='cal-table'> Calories {item.nf_calories}</p>
               <p className='cal-table'>Protein {item.full_nutrients[0].value}g</p>
