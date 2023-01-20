@@ -18,11 +18,11 @@ app.use(staticMiddleware);
 
 app.post('/api/restaurants', (req, res) => {
   const sql = `
-  insert into "restaurants" ("restaurant name", "userId")
-  values ($1, $2)
+  insert into "restaurants" ("restaurant name", "userId", "restaurantId")
+  values ($1, $2, $3)
   returning *
   `;
-  const values = [req.body.restaurant, req.body.currUser];
+  const values = [req.body.restaurant, req.body.currUser, req.body.id];
 
   db.query(sql, values)
     .then(result => {
@@ -40,7 +40,7 @@ app.delete('/api/restaurants/:restaurantName', (req, res) => {
   const restaurantName = req.params.restaurantName;
   const sql = `
   delete from "restaurants"
-  where "restaurant name" = $1
+  where "restaurantId" = $1
   returning *
   `;
   const values = [restaurantName];
@@ -48,6 +48,57 @@ app.delete('/api/restaurants/:restaurantName', (req, res) => {
     .then(result => {
       if (!result.rows[0]) {
         res.status(404).json({ error: `cannot find restaraunt ${restaurantName}` });
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).json({ error: 'An unexpected error occured.' });
+    });
+});
+
+app.post('/api/meals', (req, res) => {
+  const sql = `
+  insert into "meals" ("meal name", "restaurantId", "serving size", "calories", "protein", "fat", "carbohydrates", "restaurant name")
+  values ($1, $2, $3, $4, $5, $6, $7, $8)
+  returning *
+  `;
+  const values = [
+    req.body.mealName,
+    req.body.id,
+    req.body.servingSize,
+    req.body.calories,
+    req.body.protein,
+    req.body.fat,
+    req.body.carbohydrates,
+    req.body.restaurantName
+  ];
+
+  db.query(sql, values)
+    .then(result => {
+      res.status(201);
+      res.json(result.rows);
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).json({ error: 'An unexpected error has occured' });
+    }
+    );
+});
+
+app.delete('/api/meals/:meal', (req, res) => {
+  const mealName = req.params.meal;
+  const sql = `
+  delete from "meals"
+  where "meal name" = $1
+  returning *
+  `;
+  const values = [mealName];
+  db.query(sql, values)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(404).json({ error: `cannot find restaraunt ${mealName}` });
       } else {
         res.sendStatus(204);
       }

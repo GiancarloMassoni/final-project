@@ -28,7 +28,6 @@ export default function Home() {
   const [locations, setLocations] = useState({ locations: ['no results'] });
   const searchInput = useRef(null);
   const context = useContext(AppContext);
-  // console.log('hello', context);
   const onChangeAddress = autocomplete => {
 
     const place = autocomplete.getPlace();
@@ -64,7 +63,6 @@ export default function Home() {
 
   const ContextMenuId = id => {
     context.updateMenuId(id);
-    // console.log('context', context);
   };
   const restaurantReq = (lng, lat) => {
 
@@ -81,7 +79,6 @@ export default function Home() {
       )
       // eslint-disable-next-line no-console
       .catch(err => console.log('Fetch Get error:', err));
-    // console.log(locations);
   };
 
   if (locations.locations.includes('no results') || locations.locations.length === 0) {
