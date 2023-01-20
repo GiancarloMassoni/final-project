@@ -68,7 +68,8 @@ export default class MenuPage extends React.Component {
             calories,
             protein,
             fat,
-            carbohydrates
+            carbohydrates,
+            restaurantName: this.props.menuId
           }),
         headers: {
           'Content-Type': 'application/json'
@@ -104,6 +105,9 @@ export default class MenuPage extends React.Component {
   }
 
   favButtonMeal(food) {
+    if (this.state.addedFavRestaurant === false) {
+      return;
+    }
     if (this.state.favMeals.includes(food)) {
       return <button className='fav-btn-on-meal' onClick={event => this.addedFavMeal(food)}>Favorited</button>;
     } else {

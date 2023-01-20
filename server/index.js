@@ -60,8 +60,8 @@ app.delete('/api/restaurants/:restaurantName', (req, res) => {
 
 app.post('/api/meals', (req, res) => {
   const sql = `
-  insert into "meals" ("meal name", "restaurantId", "serving size", "calories", "protein", "fat", "carbohydrates")
-  values ($1, $2, $3, $4, $5, $6, $7)
+  insert into "meals" ("meal name", "restaurantId", "serving size", "calories", "protein", "fat", "carbohydrates", "restaurant name")
+  values ($1, $2, $3, $4, $5, $6, $7, $8)
   returning *
   `;
   const values = [
@@ -71,7 +71,8 @@ app.post('/api/meals', (req, res) => {
     req.body.calories,
     req.body.protein,
     req.body.fat,
-    req.body.carbohydrates
+    req.body.carbohydrates,
+    req.body.restaurantName
   ];
 
   db.query(sql, values)
