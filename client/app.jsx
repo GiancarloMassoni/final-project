@@ -9,15 +9,30 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       route: parseRoute(window.location.hash),
-      menuId: ''
+      menuId: '',
+      user: null,
+      isAuthorizing: true
     };
     this.updateMenu = this.updateMenu.bind(this);
+    this.handleSignIn = this.handleSignIn.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
   }
 
   componentDidMount() {
     addEventListener('hashchange', event => {
       this.setState({ route: parseRoute(window.location.hash) });
     });
+  }
+
+  handleSignIn(result) {
+    const { user, token } = result;
+    window.localStorage.setItem('react-context-jwt', token);
+    this.setState({ user });
+  }
+
+  handleSignOut() {
+    window.localStorage.removeItem('react-context-jwt');
+    this.setState({ user: null });
   }
 
   renderPage() {
@@ -35,19 +50,24 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { route, menuId } = this.state;
+    // if (this.state.isAuthorizing) return null;
+    const { route, menuId, user } = this.state;
     const updateMenuId = this.updateMenu;
+    const { handleSignIn, handleSignOut } = this;
     const contextValue = {
       route,
       menuId,
-      updateMenuId
+      updateMenuId,
+      user,
+      handleSignIn,
+      handleSignOut
     };
     return (
       <AppContext.Provider value={contextValue}>
-        <div>
+        <>
           <NavBar />
           {this.renderPage()}
-        </div>
+        </>
       </AppContext.Provider>
     );
   }

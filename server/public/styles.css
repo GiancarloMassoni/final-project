@@ -144,3 +144,7 @@ img {
   background-color: #20c997;
   color: white;
 }
+
+.text-right {
+  text-align: right;
+}
