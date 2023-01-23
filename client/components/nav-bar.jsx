@@ -12,7 +12,7 @@ export default class NavBar extends React.Component {
         </div>
         <div className='col-half text-right'>
           { user !== null &&
-            <a onClick={handleSignOut}> Sign Out</a>
+            <a href=""onClick={handleSignOut}> Sign Out</a>
 
           }
           { user === null &&
