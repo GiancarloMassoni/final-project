@@ -4,20 +4,40 @@ import NavBar from './components/nav-bar';
 import parseRoute from './lib/parse-route';
 import AppContext from './lib/app-context';
 import MenuPage from './components/menu-page';
+import jwtDecode from 'jwt-decode';
+import AuthPage from './pages/auth';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       route: parseRoute(window.location.hash),
-      menuId: ''
+      menuId: '',
+      user: null,
+      isAuthorizing: true
     };
     this.updateMenu = this.updateMenu.bind(this);
+    this.handleSignIn = this.handleSignIn.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
   }
 
   componentDidMount() {
     addEventListener('hashchange', event => {
       this.setState({ route: parseRoute(window.location.hash) });
     });
+    const token = window.localStorage.getItem('react-context-jwt');
+    const user = token ? jwtDecode(token) : null;
+    this.setState({ user, isAuthorizing: false });
+  }
+
+  handleSignIn(result) {
+    const { user, token } = result;
+    window.localStorage.setItem('react-context-jwt', token);
+    this.setState({ user });
+  }
+
+  handleSignOut() {
+    window.localStorage.removeItem('react-context-jwt');
+    this.setState({ user: null });
   }
 
   renderPage() {
@@ -27,6 +47,8 @@ export default class App extends React.Component {
     } else if (route.path === 'restaurants') {
       const menuId = route.params.get('restaurant');
       return <MenuPage menuId={menuId}/>;
+    } else if (route.path === 'sign-in' || route.path === 'sign-up') {
+      return <AuthPage />;
     }
   }
 
@@ -35,19 +57,24 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { route, menuId } = this.state;
+    if (this.state.isAuthorizing) return null;
+    const { route, menuId, user } = this.state;
     const updateMenuId = this.updateMenu;
+    const { handleSignIn, handleSignOut } = this;
     const contextValue = {
       route,
       menuId,
-      updateMenuId
+      updateMenuId,
+      user,
+      handleSignIn,
+      handleSignOut
     };
     return (
       <AppContext.Provider value={contextValue}>
-        <div>
+        <>
           <NavBar />
           {this.renderPage()}
-        </div>
+        </>
       </AppContext.Provider>
     );
   }
