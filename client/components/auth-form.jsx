@@ -44,11 +44,14 @@ export default class AuthForm extends React.Component {
       ? '#sign-in'
       : '#sign-up';
     const alternatActionText = action === 'sign-up'
-      ? 'Sign in instead'
-      : "Don't have an account? Register now!";
+      ? 'Sign in instead!'
+      : 'Register now!';
     const submitButtonText = action === 'sign-up'
       ? 'Register'
       : 'Log In';
+    const textAction = action === 'sign-up'
+      ? ' Already have an account? '
+      : " Don't have an account? ";
     return (
       <div className='row'>
         <div className='col-full text-center'>
@@ -82,9 +85,9 @@ export default class AuthForm extends React.Component {
                   {submitButtonText}
                 </button>
               </div>
-              <p className='form-text inline'>Already have an account?</p>
+              <p className='form-text inline'>{textAction}</p>
               <a className="form-text" href={alternateActionHref}>
-                {alternatActionText}
+                <u>{alternatActionText}</u>
               </a>
 
             </div>
