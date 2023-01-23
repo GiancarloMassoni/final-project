@@ -9,16 +9,15 @@ export default class AuthPage extends React.Component {
     if (user) return <Redirect to="" />;
 
     const welcomeMessage = route.path === 'sign-in'
-      ? 'Please sign in to continue'
-      : 'Create an account to get started!';
+      ? 'Sign in'
+      : 'Sign Up';
     return (
       <div className="row">
         <div className="col-full">
           <header className="text-center">
             <h2>
-              HealthyHacks
+              {welcomeMessage}
             </h2>
-            <p className="text-muted mb-4">{welcomeMessage}</p>
           </header>
           <div className="card p-3 ">
             <AuthForm

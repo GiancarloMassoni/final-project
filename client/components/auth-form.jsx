@@ -45,7 +45,7 @@ export default class AuthForm extends React.Component {
       : '#sign-up';
     const alternatActionText = action === 'sign-up'
       ? 'Sign in instead'
-      : "Don't have an account? Register now";
+      : "Don't have an account? Register now!";
     const submitButtonText = action === 'sign-up'
       ? 'Register'
       : 'Log In';
@@ -78,11 +78,12 @@ export default class AuthForm extends React.Component {
             </div>
             <div className="padding">
               <div>
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="form-btn">
                   {submitButtonText}
                 </button>
               </div>
-              <a className="padding-top" href={alternateActionHref}>
+              <p className='form-text inline'>Already have an account?</p>
+              <a className="form-text" href={alternateActionHref}>
                 {alternatActionText}
               </a>
 

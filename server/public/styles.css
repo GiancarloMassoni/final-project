@@ -164,3 +164,21 @@ img {
 .padding-top {
   padding-top: 5px;
 }
+
+.form-text {
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.form-btn {
+  background-color: #20c997;
+  border: solid 2px #20c997;
+  color: white;
+  border-radius: 7px;
+  padding: 4px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px 0.5px #888;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  width: 6rem;
+}
