@@ -4,6 +4,10 @@ const staticMiddleware = require('./static-middleware');
 const errorMiddleware = require('./error-middleware');
 const jsonMiddleware = express.json();
 const pg = require('pg');
+const path = require('path');
+// const jwt = require('jsonwebtoken');
+// const argon2 = require('argon2');
+// const ClientError = require('./client-error');
 const db = new pg.Pool({
   connectionString: 'postgres://dev:dev@localhost/healthyHacks',
   ssl: {
@@ -12,9 +16,11 @@ const db = new pg.Pool({
 });
 
 const app = express();
+const publicPath = path.join(__dirname, 'public');
 
 app.use(jsonMiddleware);
 app.use(staticMiddleware);
+app.use(express.static(publicPath));
 
 app.post('/api/restaurants', (req, res) => {
   const sql = `
