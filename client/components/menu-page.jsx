@@ -7,21 +7,21 @@ export default class MenuPage extends React.Component {
     this.state = {
       restaurantItems: [],
       favMeals: [],
-      addedFavRestaurant: false,
-      currUser: 1
+      addedFavRestaurant: false
     };
     this.addedFavRestaurant = this.addedFavRestaurant.bind(this);
   }
 
   addedFavRestaurant() {
     const id = this.state.restaurantItems[0].nix_brand_id;
+    const { userId } = this.context.user;
     if (this.state.addedFavRestaurant === false) {
 
       fetch('/api/restaurants', {
         method: 'POST',
         body: JSON.stringify({
           restaurant: this.props.menuId,
-          currUser: this.state.currUser,
+          currUser: userId,
           id
         }),
         headers: {
@@ -116,6 +116,7 @@ export default class MenuPage extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({ currUser: this.context.user });
     fetch(`https://trackapi.nutritionix.com/v2/search/instant/?query=${this.props.menuId}&detailed=true`, {
       method: 'GET',
       headers: {
