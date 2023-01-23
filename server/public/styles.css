@@ -148,3 +148,19 @@ img {
 .text-right {
   text-align: right;
 }
+
+.text-left {
+  text-align: left;
+}
+
+.sign-in-form {
+  padding: 5px;
+  margin: 0.3rem;
+  width: 15rem;
+  border: 1px solid #6c757d;
+  border-radius: 5px;
+}
+
+.padding-top {
+  padding-top: 5px;
+}

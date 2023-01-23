@@ -4,6 +4,8 @@ import NavBar from './components/nav-bar';
 import parseRoute from './lib/parse-route';
 import AppContext from './lib/app-context';
 import MenuPage from './components/menu-page';
+import jwtDecode from 'jwt-decode';
+import AuthPage from './pages/auth';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -22,6 +24,9 @@ export default class App extends React.Component {
     addEventListener('hashchange', event => {
       this.setState({ route: parseRoute(window.location.hash) });
     });
+    const token = window.localStorage.getItem('react-context-jwt');
+    const user = token ? jwtDecode(token) : null;
+    this.setState({ user, isAuthorizing: false });
   }
 
   handleSignIn(result) {
@@ -42,6 +47,8 @@ export default class App extends React.Component {
     } else if (route.path === 'restaurants') {
       const menuId = route.params.get('restaurant');
       return <MenuPage menuId={menuId}/>;
+    } else if (route.path === 'sign-in' || route.path === 'sign-up') {
+      return <AuthPage />;
     }
   }
 
@@ -50,7 +57,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    // if (this.state.isAuthorizing) return null;
+    if (this.state.isAuthorizing) return null;
     const { route, menuId, user } = this.state;
     const updateMenuId = this.updateMenu;
     const { handleSignIn, handleSignOut } = this;
