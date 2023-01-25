@@ -13,19 +13,21 @@ export default class AuthPage extends React.Component {
       : 'Sign Up';
     return (
       <div className="row">
-        <div className="col-full">
+        <div className="col-third" />
+        <div className="col-third auth-form">
           <header className="text-center">
             <h2>
               {welcomeMessage}
             </h2>
           </header>
-          <div className="card p-3 ">
+          <div>
             <AuthForm
               key={route.path}
               action={route.path}
               onSignIn={handleSignIn} />
           </div>
         </div>
+        <div className="col-third" />
       </div>
     );
   }
