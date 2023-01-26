@@ -11,7 +11,7 @@ export default class NavBar extends React.Component {
           <a href="" className='home inline padding'>Home</a>
           {
             user !== null &&
-            <a href=''>Profile</a>
+            <a href='#profile'>Profile</a>
           }
         </div>
         <div className='navbar-col text-right sign-text'>

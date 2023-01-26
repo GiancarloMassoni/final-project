@@ -114,6 +114,31 @@ app.delete('/api/meals/:meal', (req, res) => {
     });
 });
 
+app.get('/api/restaurants/:userId', (req, res, next) => {
+  const userId = req.params.userId;
+  const sql = `
+  select * from "restaurants"
+  where "userId" = $1
+  returning *
+  `;
+  const params = [userId];
+
+  db.query(sql, params)
+    .then(result => {
+      const [user] = result.rows;
+      if (!user) {
+        throw new ClientError(401, 'invalid user');
+      }
+      res.json(result.rows);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({
+        error: 'an unexpected error occurred'
+      });
+    });
+});
+
 app.use(express.static(publicPath));
 app.use(express.json());
 

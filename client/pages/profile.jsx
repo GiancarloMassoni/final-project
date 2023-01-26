@@ -11,22 +11,20 @@ export default class Profile extends React.Component {
   }
 
   componentDidMount() {
-    const { user } = this.context;
-    fetch(`/api/restaurants/${user.userId}`, {
-      method: 'GET',
-      headers: {
-        'Content Type': 'application/json'
-      }
-    }
+    const { userId } = this.context.user;
+    // console.log(userId);
+    fetch(`/api/restaurants/${userId}`, {
+      method: 'GET'
+    })
       .then(res => res.json())
-      .then(data => {
-        this.setState({ restuarants: data });
-      })
+      .then(data => this.setState({ restuarants: data }))
       // eslint-disable-next-line no-console
-      .catch(err => console.log('Fetch Get error:', err)));
+      .catch(err => console.log('Fetch Get error:', err));
+    // console.log('heelo', this.state.restuarants);
   }
 
   render() {
+
     return (
       <p>{this.state.restuarants}</p>
     );
