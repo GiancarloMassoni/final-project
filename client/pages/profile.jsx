@@ -23,17 +23,41 @@ export default class Profile extends React.Component {
       .catch(err => console.log('Fetch Get error:', err));
   }
 
-  renderPage() {
-    if (this.state.restaurants === null) {
-      return <p>Favorite Restaurants to view them here!</p>;
-    }
-    const res = this.state.restaurants.map((res, index) => <p key={index}>{res.restaurantName}</p>);
+  renderRestaurants() {
+    if (this.state.restaurants.length === 0) return <h2>Favorite Restaurants to view them here!</h2>;
+    const res = this.state.restaurants.map((res, index) => {
+      return <div key={index}>
+        <h2>{res.restaurantName}</h2>
+        <a href={`#restaurants?restaurant=${res.restaurantName}`}>Menu</a>
+      </div>
+      ;
+    });
+
     return res;
+  }
+
+  renderMeals() {
+    if (this.state.meals.length === 0) return <h2>Favorite Meals to view them here!</h2>;
+
   }
 
   render() {
     return (
-      this.renderPage()
+      <>
+        <div className='row'>
+          <div className="col-full">
+            <h1 className='text-center'>{this.context.user.username}</h1>
+          </div>
+        </div>
+        <div className='row'>
+          <div className='col-half text-center'>
+            {this.renderRestaurants()}
+          </div>
+          <div className='col-half text-center'>
+            {this.renderMeals()}
+          </div>
+        </div>
+      </>
     );
   }
 }
