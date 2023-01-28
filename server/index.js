@@ -23,7 +23,7 @@ app.use(staticMiddleware);
 
 app.post('/api/restaurants', (req, res) => {
   const sql = `
-  insert into "restaurants" ("restaurant name", "userId", "restaurantId")
+  insert into "restaurants" ("restaurantName", "userId", "restaurantId")
   values ($1, $2, $3)
   returning *
   `;
@@ -65,7 +65,7 @@ app.delete('/api/restaurants/:restaurantName', (req, res) => {
 
 app.post('/api/meals', (req, res) => {
   const sql = `
-  insert into "meals" ("meal name", "restaurantId", "serving size", "calories", "protein", "fat", "carbohydrates", "restaurant name")
+  insert into "meals" ("mealName", "restaurantId", "serving size", "calories", "protein", "fat", "carbohydrates", "restaurantName")
   values ($1, $2, $3, $4, $5, $6, $7, $8)
   returning *
   `;
@@ -119,10 +119,9 @@ app.get('/api/restaurants/:userId', (req, res, next) => {
   const sql = `
   select * from "restaurants"
   where "userId" = $1
-  returning *
+
   `;
   const params = [userId];
-
   db.query(sql, params)
     .then(result => {
       const [user] = result.rows;

@@ -5,28 +5,35 @@ export default class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      restuarants: null,
+      restaurants: [],
       meals: []
     };
   }
 
   componentDidMount() {
     const { userId } = this.context.user;
-    // console.log(userId);
     fetch(`/api/restaurants/${userId}`, {
       method: 'GET'
     })
       .then(res => res.json())
-      .then(data => this.setState({ restuarants: data }))
+      .then(restaurants => {
+        this.setState({ restaurants });
+      })
       // eslint-disable-next-line no-console
       .catch(err => console.log('Fetch Get error:', err));
-    // console.log('heelo', this.state.restuarants);
+  }
+
+  renderPage() {
+    if (this.state.restaurants === null) {
+      return <p>Favorite Restaurants to view them here!</p>;
+    }
+    const res = this.state.restaurants.map((res, index) => <p key={index}>{res.restaurantName}</p>);
+    return res;
   }
 
   render() {
-
     return (
-      <p>{this.state.restuarants}</p>
+      this.renderPage()
     );
   }
 }
