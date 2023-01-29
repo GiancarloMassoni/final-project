@@ -190,3 +190,28 @@ img {
   padding: 150px;
   border-radius: 20px;
 }
+
+.res-border {
+  border-bottom: 1px solid #dee2e6;
+  padding: 50px;
+}
+
+.underline {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.profile-btn {
+  background-color: #dee2e6;
+  color: black;
+  border-radius: 7px;
+  padding: 8px;
+  border: solid 0 #20c997;
+  cursor: pointer;
+  box-shadow: 0 6px 8px 01px #888;
+  width: 7rem;
+  font-size: 1rem;
+}
+
+.profile-btn:hover {
+  background-color: #20c997;
+}

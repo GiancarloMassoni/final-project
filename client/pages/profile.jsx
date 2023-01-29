@@ -25,10 +25,12 @@ export default class Profile extends React.Component {
 
   renderRestaurants() {
     if (this.state.restaurants.length === 0) return <h2>Favorite Restaurants to view them here!</h2>;
+
     const res = this.state.restaurants.map((res, index) => {
-      return <div key={index}>
+      return <div key={index} className='padding res-border'>
         <h2>{res.restaurantName}</h2>
-        <a href={`#restaurants?restaurant=${res.restaurantName}`}>Menu</a>
+        <a href={`#restaurants?restaurant=${res.restaurantName}`}>
+          <button className='profile-btn'>Menu</button></a>
       </div>
       ;
     });
@@ -42,6 +44,8 @@ export default class Profile extends React.Component {
   }
 
   render() {
+    const meals = this.state.meals;
+    const restaurants = this.state.restaurants;
     return (
       <>
         <div className='row'>
@@ -50,10 +54,18 @@ export default class Profile extends React.Component {
           </div>
         </div>
         <div className='row'>
-          <div className='col-half text-center'>
+          <div className='col-half text-center border'>
+            {
+              restaurants.length !== 0 &&
+              <h1 className='underline padding'>Favorite Restaurants</h1>
+            }
             {this.renderRestaurants()}
           </div>
           <div className='col-half text-center'>
+            {
+              meals.length !== 0 &&
+              <h1>Favorite Meals</h1>
+            }
             {this.renderMeals()}
           </div>
         </div>
