@@ -5,15 +5,18 @@ export default class NavBar extends React.Component {
   render() {
     const { user, handleSignOut } = this.context;
     return (
-      <div className='row navbar'>
-        <div className='col-half padding text-left'>
+      <div className='navbar'>
+        <div className='navbar-col padding text-left'>
           <h1 className='inline '>HealthyHacks</h1>
           <a href="" className='home inline padding'>Home</a>
+          {
+            user !== null &&
+            <a href='#profile'>Profile</a>
+          }
         </div>
-        <div className='col-half text-right'>
+        <div className='navbar-col text-right sign-text'>
           { user !== null &&
             <a href=""onClick={handleSignOut}> Sign Out</a>
-
           }
           { user === null &&
           <>

@@ -19,7 +19,7 @@ CREATE TABLE "public"."users" (
 
 CREATE TABLE "public"."restaurants" (
 	"userId" serial NOT NULL,
-	"restaurant name" TEXT NOT NULL,
+	"restaurantName" TEXT NOT NULL,
 	"restaurantId" text NOT NULL,
 	CONSTRAINT "restaurants_pk" PRIMARY KEY ("restaurantId")
 ) WITH (
@@ -29,15 +29,16 @@ CREATE TABLE "public"."restaurants" (
 
 
 CREATE TABLE "public"."meals" (
-	"meal name" TEXT NOT NULL,
+	"mealName" TEXT NOT NULL,
 	"restaurantId" text NOT NULL,
 	"mealId" serial NOT NULL,
-  "serving size" INTEGER NOT NULL,
+  "servingSize" INTEGER NOT NULL,
   "calories" INTEGER NOT NULL,
   "protein" INTEGER NOT NULL,
   "fat" INTEGER NOT NULL,
   "carbohydrates" INTEGER NOT NULL,
-  "restaurant name" text NOT NULL,
+  "restaurantName" text NOT NULL,
+  "img" text not NULL,
 	CONSTRAINT "meals_pk" PRIMARY KEY ("mealId")
 ) WITH (
   OIDS=FALSE

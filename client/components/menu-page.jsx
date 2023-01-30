@@ -7,21 +7,21 @@ export default class MenuPage extends React.Component {
     this.state = {
       restaurantItems: [],
       favMeals: [],
-      addedFavRestaurant: false,
-      currUser: 1
+      addedFavRestaurant: false
     };
     this.addedFavRestaurant = this.addedFavRestaurant.bind(this);
   }
 
   addedFavRestaurant() {
     const id = this.state.restaurantItems[0].nix_brand_id;
+    const { userId } = this.context.user;
     if (this.state.addedFavRestaurant === false) {
 
       fetch('/api/restaurants', {
         method: 'POST',
         body: JSON.stringify({
           restaurant: this.props.menuId,
-          currUser: this.state.currUser,
+          currUser: userId,
           id
         }),
         headers: {
@@ -57,6 +57,7 @@ export default class MenuPage extends React.Component {
     const protein = meal.full_nutrients[0].value;
     const fat = meal.full_nutrients[1].value;
     const carbohydrates = meal.full_nutrients[2].value;
+    const img = meal.photo.thumb;
     if (!this.state.favMeals.includes(meal)) {
       fetch('/api/meals', {
         method: 'POST',
@@ -69,7 +70,8 @@ export default class MenuPage extends React.Component {
             protein,
             fat,
             carbohydrates,
-            restaurantName: this.props.menuId
+            restaurantName: this.props.menuId,
+            img
           }),
         headers: {
           'Content-Type': 'application/json'
@@ -116,6 +118,7 @@ export default class MenuPage extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({ currUser: this.context.user });
     fetch(`https://trackapi.nutritionix.com/v2/search/instant/?query=${this.props.menuId}&detailed=true`, {
       method: 'GET',
       headers: {

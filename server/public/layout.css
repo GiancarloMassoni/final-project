@@ -3,6 +3,10 @@
   flex-wrap: wrap;
 }
 
+body {
+  padding: 0;
+}
+
 .inline {
   display: inline;
 }
@@ -28,9 +32,22 @@
   padding: 20px;
 }
 
+.col-third {
+  flex-basis: calc(100% / 3);
+}
+
+.navbar-col {
+  flex-basis: 50%;
+  padding: 20px;
+}
+
 @media screen and (max-width: 768px) {
   .col-half {
     flex-basis: 100%;
     text-align: center;
+  }
+
+  .col-third {
+    flex-basis: 100%;
   }
 }

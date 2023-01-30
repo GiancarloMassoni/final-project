@@ -6,6 +6,7 @@ import AppContext from './lib/app-context';
 import MenuPage from './components/menu-page';
 import jwtDecode from 'jwt-decode';
 import AuthPage from './pages/auth';
+import Profile from './pages/profile';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -49,6 +50,8 @@ export default class App extends React.Component {
       return <MenuPage menuId={menuId}/>;
     } else if (route.path === 'sign-in' || route.path === 'sign-up') {
       return <AuthPage />;
+    } else if (route.path === 'profile') {
+      return <Profile />;
     }
   }
 
