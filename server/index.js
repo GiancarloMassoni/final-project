@@ -65,8 +65,8 @@ app.delete('/api/restaurants/:restaurantName', (req, res) => {
 
 app.post('/api/meals', (req, res) => {
   const sql = `
-  insert into "meals" ("mealName", "restaurantId", "serving size", "calories", "protein", "fat", "carbohydrates", "restaurantName")
-  values ($1, $2, $3, $4, $5, $6, $7, $8)
+  insert into "meals" ("mealName", "restaurantId", "servingSize", "calories", "protein", "fat", "carbohydrates", "restaurantName", "img")
+  values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
   returning *
   `;
   const values = [
@@ -77,7 +77,8 @@ app.post('/api/meals', (req, res) => {
     req.body.protein,
     req.body.fat,
     req.body.carbohydrates,
-    req.body.restaurantName
+    req.body.restaurantName,
+    req.body.img
   ];
 
   db.query(sql, values)
@@ -120,6 +121,30 @@ app.get('/api/restaurants/:userId', (req, res, next) => {
   select * from "restaurants"
   where "userId" = $1
 
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      const [user] = result.rows;
+      if (!user) {
+        throw new ClientError(401, 'invalid user');
+      }
+      res.json(result.rows);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({
+        error: 'an unexpected error occurred'
+      });
+    });
+});
+
+app.get('/api/meals/:userId', (req, res, next) => {
+  const userId = req.params.userId;
+  const sql = `
+  select * from "meals"
+  join "restaurants" using ("restaurantId")
+  where "userId" = $1
   `;
   const params = [userId];
   db.query(sql, params)

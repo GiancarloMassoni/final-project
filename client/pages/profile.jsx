@@ -16,15 +16,21 @@ export default class Profile extends React.Component {
       method: 'GET'
     })
       .then(res => res.json())
-      .then(restaurants => {
-        this.setState({ restaurants });
-      })
+      .then(restaurants => this.setState({ restaurants }))
+      // eslint-disable-next-line no-console
+      .catch(err => console.log('Fetch Get error:', err));
+
+    fetch(`/api/meals/${userId}`, {
+      method: 'GET'
+    })
+      .then(res => res.json())
+      .then(meals => this.setState({ meals }))
       // eslint-disable-next-line no-console
       .catch(err => console.log('Fetch Get error:', err));
   }
 
   renderRestaurants() {
-    if (this.state.restaurants.length === 0) return <h2>Favorite Restaurants to view them here!</h2>;
+    if (this.state.restaurants.length === 0) return <h1 className='underline padding'>Favorite Restaurants to view them here!</h1>;
 
     const res = this.state.restaurants.map((res, index) => {
       return <div key={index} className='padding res-border'>
@@ -39,8 +45,27 @@ export default class Profile extends React.Component {
   }
 
   renderMeals() {
-    if (this.state.meals.length === 0) return <h2>Favorite Meals to view them here!</h2>;
+    if (this.state.meals.length === 0) return <h1 className='underline padding'>Favorite Meals to view them here!</h1>;
 
+    const meals = this.state.meals.map((res, index) => {
+      return <div key={index} className='row padding res-border'>
+        <div className="col-full">
+          <h2>{res.restaurantName}</h2>
+          <h3>{res.mealName}</h3>
+        </div>
+        <div className="col-half">
+          <img src={res.img}/>
+        </div>
+        <div className="col-half">
+          <p className='cal-table'>Serving Size {res.servingSize}</p>
+          <p className='cal-table'>Calories {res.calories}</p>
+          <p className='cal-table'>Protein {res.protein}</p>
+          <p className='cal-table'>Fat {res.fat}</p>
+          <p className='cal-table'>Carbohydrates {res.carbohydrates}</p>
+        </div>
+      </div>;
+    });
+    return meals;
   }
 
   render() {
@@ -49,7 +74,7 @@ export default class Profile extends React.Component {
     return (
       <>
         <div className='row'>
-          <div className="col-full">
+          <div className="col-full padding">
             <h1 className='text-center'>{this.context.user.username}</h1>
           </div>
         </div>
@@ -61,10 +86,10 @@ export default class Profile extends React.Component {
             }
             {this.renderRestaurants()}
           </div>
-          <div className='col-half text-center'>
+          <div className='col-half text-center border'>
             {
               meals.length !== 0 &&
-              <h1>Favorite Meals</h1>
+              <h1 className='underline padding'>Favorite Meals</h1>
             }
             {this.renderMeals()}
           </div>

@@ -38,6 +38,7 @@ CREATE TABLE "public"."meals" (
   "fat" INTEGER NOT NULL,
   "carbohydrates" INTEGER NOT NULL,
   "restaurantName" text NOT NULL,
+  "img" text not NULL,
 	CONSTRAINT "meals_pk" PRIMARY KEY ("mealId")
 ) WITH (
   OIDS=FALSE

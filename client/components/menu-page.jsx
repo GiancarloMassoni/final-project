@@ -57,6 +57,7 @@ export default class MenuPage extends React.Component {
     const protein = meal.full_nutrients[0].value;
     const fat = meal.full_nutrients[1].value;
     const carbohydrates = meal.full_nutrients[2].value;
+    const img = meal.photo.thumb;
     if (!this.state.favMeals.includes(meal)) {
       fetch('/api/meals', {
         method: 'POST',
@@ -69,7 +70,8 @@ export default class MenuPage extends React.Component {
             protein,
             fat,
             carbohydrates,
-            restaurantName: this.props.menuId
+            restaurantName: this.props.menuId,
+            img
           }),
         headers: {
           'Content-Type': 'application/json'
