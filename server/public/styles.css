@@ -215,17 +215,3 @@ img {
 .profile-btn:hover {
   background-color: #20c997;
 }
-
-.fa-circle-xmark {
-  color: #20c997;
-}
-
-.fa-circle-xmark:hover {
-  color: white;
-  background-color: #20c997;
-  cursor: pointer;
-}
-
-.margin-left {
-  margin-left: 1rem;
-}

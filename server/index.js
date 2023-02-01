@@ -163,30 +163,6 @@ app.get('/api/meals/:userId', (req, res, next) => {
     });
 });
 
-app.delete('/api/profile/restaurants/:userId', (req, res) => {
-  const userId = req.params.userId;
-  const restaurant = req.body.restaurant;
-  const sql = `
-  delete from "restaurants"
-  where "userId" = $1
-  and "restaurantName" = $2
-  returning *
-  `;
-  const values = [userId, restaurant];
-  db.query(sql, values)
-    .then(result => {
-      if (!result.rows[0]) {
-        res.status(404).json({ error: `cannot find restaraunt ${restaurant}` });
-      } else {
-        res.sendStatus(204);
-      }
-    })
-    .catch(error => {
-      console.error(error);
-      res.status(500).json({ error: 'An unexpected error occured.' });
-    });
-});
-
 app.use(express.static(publicPath));
 app.use(express.json());
 
