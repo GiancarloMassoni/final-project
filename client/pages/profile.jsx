@@ -29,12 +29,32 @@ export default class Profile extends React.Component {
       .catch(err => console.log('Fetch Get error:', err));
   }
 
+  removeRestaurant(restaurant) {
+    const { userId } = this.context.user;
+
+    fetch(`/api/profile/restaurants/${userId}`, {
+      method: 'DELETE',
+      body: JSON.stringify({ restaurant }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res)
+      .then(data => {
+        const newRestaurants = this.state.restaurants.filter(el => el.restaurantName !== restaurant);
+        this.setState({ restaurants: newRestaurants });
+      });
+  }
+
   renderRestaurants() {
     if (this.state.restaurants.length === 0) return <h1 className='underline padding'>Favorite Restaurants to view them here!</h1>;
 
     const res = this.state.restaurants.map((res, index) => {
       return <div key={index} className='padding res-border'>
-        <h2>{res.restaurantName}</h2>
+        <div className='padding'>
+          <h2 className='inline'>{res.restaurantName}</h2>
+          <i className="fa-regular fa-circle-xmark  margin-left" onClick={event => this.removeRestaurant(res.restaurantName)} />
+        </div>
         <a href={`#restaurants?restaurant=${res.restaurantName}`}>
           <button className='profile-btn'>Menu</button></a>
       </div>
