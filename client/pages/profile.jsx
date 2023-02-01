@@ -31,16 +31,17 @@ export default class Profile extends React.Component {
 
   removeRestaurant(restaurant) {
     const { userId } = this.context.user;
-    // console.log(restaurant, userId);
 
-    fetch(`/api/restaurants/${userId}`, {
+    fetch(`/api/profile/restaurants/${userId}`, {
       method: 'DELETE',
-      body: JSON.stringify({ restaurant })
+      body: JSON.stringify({ restaurant }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
       .then(res => res)
       .then(data => {
-        const newRestaurants = this.state.restaurants.filter(el => el !== restaurant);
-        // console.log('new', newRestaurants);
+        const newRestaurants = this.state.restaurants.filter(el => el.restaurantName !== restaurant);
         this.setState({ restaurants: newRestaurants });
       });
   }
