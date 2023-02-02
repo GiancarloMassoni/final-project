@@ -187,6 +187,28 @@ app.delete('/api/profile/restaurants/:userId', (req, res) => {
     });
 });
 
+app.delete('/api/profile/meals/:mealId', (req, res) => {
+  const mealId = req.params.mealId;
+  const sql = `
+  delete from "meals"
+  where "mealId" = $1
+  returning *
+  `;
+  const values = [mealId];
+  db.query(sql, values)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(404).json({ error: `cannot find meal ${mealId}` });
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).json({ error: 'An unexpected error occured.' });
+    });
+});
+
 app.use(express.static(publicPath));
 app.use(express.json());
 
