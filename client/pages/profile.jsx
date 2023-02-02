@@ -70,7 +70,7 @@ export default class Profile extends React.Component {
     const meals = this.state.meals.map((res, index) => {
       return <div key={index} className='row padding res-border'>
         <div className="col-full">
-          <h2>{res.restaurantName}</h2>
+          <h2 className='inline'>{res.restaurantName}</h2>
           <i className="fa-regular fa-circle-xmark  margin-left" onClick={event => this.removeRestaurant(res.restaurantName)} />
           <h3>{res.mealName}</h3>
         </div>
