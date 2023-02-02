@@ -47,18 +47,14 @@ export default class Profile extends React.Component {
   }
 
   removeMeal(meal) {
-    const { userId } = this.context.user;
-
-    fetch(`/api/profile/meals/${userId}`, {
-      method: 'DELETE',
-      body: JSON.stringify({ meal }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    const { mealId } = meal;
+    const { mealName } = meal;
+    fetch(`/api/profile/meals/${mealId}`, {
+      method: 'DELETE'
     })
       .then(res => res)
       .then(data => {
-        const newMeals = this.state.meals.filter(el => el.mealName !== meal);
+        const newMeals = this.state.meals.filter(el => el.mealName !== mealName);
         this.setState({ meals: newMeals });
       });
   }
@@ -88,7 +84,7 @@ export default class Profile extends React.Component {
       return <div key={index} className='row padding res-border'>
         <div className="col-full">
           <h2 className='inline'>{res.restaurantName}</h2>
-          <i className="fa-regular fa-circle-xmark  margin-left" onClick={event => this.removeMeal(res.mealName)} />
+          <i className="fa-regular fa-circle-xmark  margin-left" onClick={event => this.removeMeal(res)} />
           <h3>{res.mealName}</h3>
         </div>
         <div className="col-half">
