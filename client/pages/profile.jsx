@@ -71,6 +71,7 @@ export default class Profile extends React.Component {
       return <div key={index} className='row padding res-border'>
         <div className="col-full">
           <h2>{res.restaurantName}</h2>
+          <i className="fa-regular fa-circle-xmark  margin-left" onClick={event => this.removeRestaurant(res.restaurantName)} />
           <h3>{res.mealName}</h3>
         </div>
         <div className="col-half">
