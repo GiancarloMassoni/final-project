@@ -58,8 +58,8 @@ export default class Profile extends React.Component {
     })
       .then(res => res)
       .then(data => {
-        const newRestaurants = this.state.restaurants.filter(el => el.restaurantName !== meal);
-        this.setState({ restaurants: newRestaurants });
+        const newMeals = this.state.meals.filter(el => el.mealName !== meal);
+        this.setState({ meals: newMeals });
       });
   }
 
