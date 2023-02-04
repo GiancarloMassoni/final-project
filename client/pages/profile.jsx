@@ -109,7 +109,7 @@ export default class Profile extends React.Component {
       <>
         <div className='row'>
           <div className="col-full padding">
-            <h1 className='text-center'>{this.context.user.username}</h1>
+            <h1 className='text-center user-name'>{this.context.user.username}</h1>
           </div>
         </div>
         <div className='row'>

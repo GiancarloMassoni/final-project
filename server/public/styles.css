@@ -229,3 +229,7 @@ img {
 .margin-left {
   margin-left: 1rem;
 }
+
+.user-name {
+  font-size: 3rem;
+}
