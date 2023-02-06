@@ -30,7 +30,7 @@ export default function Home() {
   const context = useContext(AppContext);
   const onChangeAddress = autocomplete => {
     const place = autocomplete.getPlace();
-    const longitude = place.geometry.viewport.Ia.lo;
+    const longitude = place.geometry.viewport.Ma.lo;
     const latitude = place.geometry.viewport.Ya.lo;
     restaurantReq(longitude, latitude);
 
