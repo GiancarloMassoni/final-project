@@ -7,7 +7,8 @@ export default class MenuPage extends React.Component {
     this.state = {
       restaurantItems: [],
       favMeals: [],
-      addedFavRestaurant: false
+      addedFavRestaurant: false,
+      favRestaurants: []
     };
     this.addedFavRestaurant = this.addedFavRestaurant.bind(this);
   }
@@ -119,6 +120,15 @@ export default class MenuPage extends React.Component {
 
   componentDidMount() {
     this.setState({ currUser: this.context.user });
+    const { userId } = this.context.user;
+    fetch(`/api/restaurants/${userId}`, {
+      method: 'GET'
+    })
+      .then(res => res.json())
+      .then(data => this.setState({ favRestaurants: data }))
+      // eslint-disable-next-line no-console
+      .catch(err => console.log('Fetch Get Error', err));
+
     fetch(`https://trackapi.nutritionix.com/v2/search/instant/?query=${this.props.menuId}&detailed=true`, {
       method: 'GET',
       headers: {
@@ -218,6 +228,7 @@ export default class MenuPage extends React.Component {
   }
 
   render() {
+    // console.log(this.state);
     return (
       <div className='row'>
         <div className='col-full text-center'>
