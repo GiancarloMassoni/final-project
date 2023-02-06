@@ -8,7 +8,8 @@ export default class MenuPage extends React.Component {
     this.state = {
       restaurantItems: [],
       favMeals: [],
-      favRestaurants: []
+      favRestaurants: [],
+      currUser: null
     };
     this.addedFavRestaurant = this.addedFavRestaurant.bind(this);
   }
@@ -109,6 +110,7 @@ export default class MenuPage extends React.Component {
   }
 
   favButtonRestaurant() {
+    if (this.state.currUser === null) return;
     if (!this.state.favRestaurants.includes(this.props.menuId)) {
       return <button className='fav-btn' onClick={this.addedFavRestaurant}>Favorite</button>;
     } else {
@@ -117,6 +119,7 @@ export default class MenuPage extends React.Component {
   }
 
   favButtonMeal(food) {
+    if (this.state.currUser === null) return;
     if (this.state.favMeals.includes(food.food_name)) {
       return <button className='fav-btn-on-meal' onClick={event => this.addedFavMeal(food)}>Favorited</button>;
     } else {
@@ -125,30 +128,31 @@ export default class MenuPage extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ currUser: this.context.user });
-    const { userId } = this.context.user;
-    fetch(`/api/restaurants/${userId}`, {
-      method: 'GET'
-    })
-      .then(res => res.json())
-      .then(data => {
-        const newRestaurants = data.map(res => res.restaurantName);
-        this.setState({ favRestaurants: newRestaurants });
+    if (this.context.user !== null) {
+      this.setState({ currUser: this.context.user });
+      const { userId } = this.context.user;
+      fetch(`/api/restaurants/${userId}`, {
+        method: 'GET'
       })
+        .then(res => res.json())
+        .then(data => {
+          const newRestaurants = data.map(res => res.restaurantName);
+          this.setState({ favRestaurants: newRestaurants });
+        })
       // eslint-disable-next-line no-console
-      .catch(err => console.log('Fetch Get Error', err));
+        .catch(err => console.log('Fetch Get Error', err));
 
-    fetch(`/api/meals/${userId}`, {
-      method: 'GET'
-    })
-      .then(res => res.json())
-      .then(data => {
-        const newMeals = data.map(res => res.mealName);
-        this.setState({ favMeals: newMeals });
+      fetch(`/api/meals/${userId}`, {
+        method: 'GET'
       })
+        .then(res => res.json())
+        .then(data => {
+          const newMeals = data.map(res => res.mealName);
+          this.setState({ favMeals: newMeals });
+        })
       // eslint-disable-next-line no-console
-      .catch(err => console.log('Fetch Get Error', err));
-
+        .catch(err => console.log('Fetch Get Error', err));
+    }
     fetch(`https://trackapi.nutritionix.com/v2/search/instant/?query=${this.props.menuId}&detailed=true`, {
       method: 'GET',
       headers: {
