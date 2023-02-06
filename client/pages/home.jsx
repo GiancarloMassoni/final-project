@@ -30,6 +30,10 @@ export default function Home() {
   const context = useContext(AppContext);
   const onChangeAddress = autocomplete => {
     const place = autocomplete.getPlace();
+    if (!place.geometry || !place.geometry.location) {
+      window.alert("No details available for input: '" + place.name + "'");
+      return;
+    }
     const longitude = place.geometry.viewport.Ma.lo;
     const latitude = place.geometry.viewport.Ya.lo;
     restaurantReq(longitude, latitude);
@@ -63,6 +67,7 @@ export default function Home() {
   const ContextMenuId = id => {
     context.updateMenuId(id);
   };
+
   const restaurantReq = (lng, lat) => {
 
     fetch(`https://trackapi.nutritionix.com/v2/locations?ll=${lat},${lng}&distance=30mi&limit=20`, {
@@ -89,14 +94,12 @@ export default function Home() {
           meals that are under 500 calories at the closest fast food locations to you.</p></div>
         <div className='row text-center'>
           <div className='col-full'>
-            <form>
-              <label htmlFor="address" className='block padding'>
-                Enter Address to view nearby restaurant menus
-              </label>
-              <input type="text" placeholder='Address' required className='address-input'
+            <label htmlFor="address" className='block padding'>
+              Enter Address to view nearby restaurant menus
+            </label>
+            <input type="text" placeholder='Address' required className='address-input'
                 ref={searchInput} />
-              <i className="fa-sharp fa-solid fa-location-dot" onClick={findMyLocation} />
-            </form>
+            <i className="fa-sharp fa-solid fa-location-dot" onClick={findMyLocation} />
             <div>
               <div>{locArr}</div>
             </div>
@@ -144,14 +147,12 @@ export default function Home() {
           meals that are under 500 calories at the closest fast food locations to you.</h3></div>
         <div className='row text-center'>
           <div className='col-full'>
-            <form>
-              <label htmlFor="address" className='block padding'>
-                Enter Address to view nearby restaurant menus
-              </label>
-              <input type="text" placeholder='Address' required className='address-input'
-                ref={searchInput} />
-              <i className="fa-sharp fa-solid fa-location-dot" onClick={findMyLocation} />
-            </form>
+            <label htmlFor="address" className='block padding'>
+              Enter Address to view nearby restaurant menus
+            </label>
+            <input type="text" placeholder='Address' required className='address-input'
+                ref={searchInput}/>
+            <i className="fa-sharp fa-solid fa-location-dot" onClick={findMyLocation} />
             <div>
               <h1>Nearby Restaurants</h1>
               <div className='row'>{locArr}</div>
