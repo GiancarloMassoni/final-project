@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import AppContext from '../lib/app-context';
 
@@ -7,22 +8,21 @@ export default class MenuPage extends React.Component {
     this.state = {
       restaurantItems: [],
       favMeals: [],
-      addedFavRestaurant: false
+      favRestaurants: []
     };
     this.addedFavRestaurant = this.addedFavRestaurant.bind(this);
   }
 
   addedFavRestaurant() {
-    const id = this.state.restaurantItems[0].nix_brand_id;
+    const { brand_name } = this.state.restaurantItems[0];
     const { userId } = this.context.user;
-    if (this.state.addedFavRestaurant === false) {
+    if (!this.state.favRestaurants.includes(brand_name)) {
 
       fetch('/api/restaurants', {
         method: 'POST',
         body: JSON.stringify({
           restaurant: this.props.menuId,
-          currUser: userId,
-          id
+          currUser: userId
         }),
         headers: {
           'Content-Type': 'application/json'
@@ -31,17 +31,23 @@ export default class MenuPage extends React.Component {
       })
         .then(res => res.json())
         .then(data => {
-          this.setState({ addedFavRestaurant: true });
+          const newRestaurants = this.state.favRestaurants.concat(this.props.menuId);
+          this.setState({ favRestaurants: newRestaurants });
         })
         .catch(err => console.error('Fetch failed!', err))
       ;
-    } else if (this.state.addedFavRestaurant === true) {
-      fetch(`/api/restaurants/${id}`, {
-        method: 'DELETE'
+    } else if (this.state.favRestaurants.includes(brand_name)) {
+      fetch(`/api/restaurants/${userId}`, {
+        method: 'DELETE',
+        body: JSON.stringify({ restaurant: brand_name }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
         .then(res => res)
         .then(data => {
-          this.setState({ addedFavRestaurant: false });
+          const newRestaurants = this.state.favRestaurants.filter(el => el !== brand_name);
+          this.setState({ favRestaurants: newRestaurants });
         })
         .catch(err => console.error('Delete failed!', err))
       ;
@@ -50,7 +56,6 @@ export default class MenuPage extends React.Component {
   }
 
   addedFavMeal(meal) {
-    const id = meal.nix_brand_id;
     const mealName = meal.food_name;
     const servingSize = meal.serving_weight_grams;
     const calories = meal.nf_calories;
@@ -58,13 +63,14 @@ export default class MenuPage extends React.Component {
     const fat = meal.full_nutrients[1].value;
     const carbohydrates = meal.full_nutrients[2].value;
     const img = meal.photo.thumb;
-    if (!this.state.favMeals.includes(meal)) {
+    const { userId } = this.context.user;
+    if (!this.state.favMeals.includes(mealName)) {
       fetch('/api/meals', {
         method: 'POST',
         body: JSON.stringify(
           {
+            userId,
             mealName,
-            id,
             servingSize,
             calories,
             protein,
@@ -79,18 +85,22 @@ export default class MenuPage extends React.Component {
       })
         .then(res => res.json())
         .then(data => {
-          const newMeals = this.state.favMeals.concat(meal);
+          const newMeals = this.state.favMeals.concat(mealName);
           this.setState({ favMeals: newMeals });
 
         })
         .catch(err => console.error('Fetch failed!', err));
-    } else if (this.state.favMeals.includes(meal)) {
-      fetch(`/api/meals/${mealName}`, {
-        method: 'DELETE'
+    } else if (this.state.favMeals.includes(mealName)) {
+      fetch(`/api/meals/${userId}`, {
+        method: 'DELETE',
+        body: JSON.stringify({ mealName }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
         .then(res => res)
         .then(data => {
-          const newMeals = this.state.favMeals.filter(el => el.food_name !== mealName);
+          const newMeals = this.state.favMeals.filter(el => el !== mealName);
           this.setState({ favMeals: newMeals });
         })
         .catch(err => console.error('Delete failed!', err))
@@ -99,7 +109,7 @@ export default class MenuPage extends React.Component {
   }
 
   favButtonRestaurant() {
-    if (this.state.addedFavRestaurant === false) {
+    if (!this.state.favRestaurants.includes(this.props.menuId)) {
       return <button className='fav-btn' onClick={this.addedFavRestaurant}>Favorite</button>;
     } else {
       return <button className='fav-btn-on' onClick={this.addedFavRestaurant}>Favorited</button>;
@@ -107,10 +117,7 @@ export default class MenuPage extends React.Component {
   }
 
   favButtonMeal(food) {
-    if (this.state.addedFavRestaurant === false) {
-      return;
-    }
-    if (this.state.favMeals.includes(food)) {
+    if (this.state.favMeals.includes(food.food_name)) {
       return <button className='fav-btn-on-meal' onClick={event => this.addedFavMeal(food)}>Favorited</button>;
     } else {
       return <button className='fav-btn-meal' onClick={event => this.addedFavMeal(food)}>Favorite</button>;
@@ -119,6 +126,29 @@ export default class MenuPage extends React.Component {
 
   componentDidMount() {
     this.setState({ currUser: this.context.user });
+    const { userId } = this.context.user;
+    fetch(`/api/restaurants/${userId}`, {
+      method: 'GET'
+    })
+      .then(res => res.json())
+      .then(data => {
+        const newRestaurants = data.map(res => res.restaurantName);
+        this.setState({ favRestaurants: newRestaurants });
+      })
+      // eslint-disable-next-line no-console
+      .catch(err => console.log('Fetch Get Error', err));
+
+    fetch(`/api/meals/${userId}`, {
+      method: 'GET'
+    })
+      .then(res => res.json())
+      .then(data => {
+        const newMeals = data.map(res => res.mealName);
+        this.setState({ favMeals: newMeals });
+      })
+      // eslint-disable-next-line no-console
+      .catch(err => console.log('Fetch Get Error', err));
+
     fetch(`https://trackapi.nutritionix.com/v2/search/instant/?query=${this.props.menuId}&detailed=true`, {
       method: 'GET',
       headers: {

@@ -23,11 +23,11 @@ app.use(staticMiddleware);
 
 app.post('/api/restaurants', (req, res) => {
   const sql = `
-  insert into "restaurants" ("restaurantName", "userId", "restaurantId")
-  values ($1, $2, $3)
+  insert into "restaurants" ("restaurantName", "userId")
+  values ($1, $2)
   returning *
   `;
-  const values = [req.body.restaurant, req.body.currUser, req.body.id];
+  const values = [req.body.restaurant, req.body.currUser];
 
   db.query(sql, values)
     .then(result => {
@@ -41,14 +41,16 @@ app.post('/api/restaurants', (req, res) => {
     );
 });
 
-app.delete('/api/restaurants/:restaurantName', (req, res) => {
-  const restaurantName = req.params.restaurantName;
+app.delete('/api/restaurants/:userId', (req, res) => {
+  const userId = req.params.userId;
+  const restaurantName = req.body.restaurant;
   const sql = `
   delete from "restaurants"
-  where "restaurantId" = $1
+  where "restaurantName" = $1
+  and "userId" = $2
   returning *
   `;
-  const values = [restaurantName];
+  const values = [restaurantName, userId];
   db.query(sql, values)
     .then(result => {
       if (!result.rows[0]) {
@@ -65,13 +67,13 @@ app.delete('/api/restaurants/:restaurantName', (req, res) => {
 
 app.post('/api/meals', (req, res) => {
   const sql = `
-  insert into "meals" ("mealName", "restaurantId", "servingSize", "calories", "protein", "fat", "carbohydrates", "restaurantName", "img")
+  insert into "meals" ("userId", "mealName", "servingSize", "calories", "protein", "fat", "carbohydrates", "restaurantName", "img")
   values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
   returning *
   `;
   const values = [
+    req.body.userId,
     req.body.mealName,
-    req.body.id,
     req.body.servingSize,
     req.body.calories,
     req.body.protein,
@@ -93,18 +95,20 @@ app.post('/api/meals', (req, res) => {
     );
 });
 
-app.delete('/api/meals/:meal', (req, res) => {
-  const mealName = req.params.meal;
+app.delete('/api/meals/:userId', (req, res) => {
+  const userId = req.params.userId;
+  const mealName = req.body.mealName;
   const sql = `
   delete from "meals"
-  where "meal name" = $1
+  where "mealName" = $1
+  and "userId" = $2
   returning *
   `;
-  const values = [mealName];
+  const values = [mealName, userId];
   db.query(sql, values)
     .then(result => {
       if (!result.rows[0]) {
-        res.status(404).json({ error: `cannot find restaraunt ${mealName}` });
+        res.status(404).json({ error: `cannot find meal ${mealName}` });
       } else {
         res.sendStatus(204);
       }
@@ -143,7 +147,6 @@ app.get('/api/meals/:userId', (req, res, next) => {
   const userId = req.params.userId;
   const sql = `
   select * from "meals"
-  join "restaurants" using ("restaurantId")
   where "userId" = $1
   `;
   const params = [userId];

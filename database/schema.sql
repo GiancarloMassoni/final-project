@@ -20,7 +20,7 @@ CREATE TABLE "public"."users" (
 CREATE TABLE "public"."restaurants" (
 	"userId" serial NOT NULL,
 	"restaurantName" TEXT NOT NULL,
-	"restaurantId" text NOT NULL,
+	"restaurantId" serial NOT NULL,
 	CONSTRAINT "restaurants_pk" PRIMARY KEY ("restaurantId")
 ) WITH (
   OIDS=FALSE
@@ -29,8 +29,8 @@ CREATE TABLE "public"."restaurants" (
 
 
 CREATE TABLE "public"."meals" (
+  "userId" serial NOT NULL,
 	"mealName" TEXT NOT NULL,
-	"restaurantId" text NOT NULL,
 	"mealId" serial NOT NULL,
   "servingSize" INTEGER NOT NULL,
   "calories" INTEGER NOT NULL,
@@ -49,4 +49,4 @@ CREATE TABLE "public"."meals" (
 
 ALTER TABLE "restaurants" ADD CONSTRAINT "restaurants_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
 
-ALTER TABLE "meals" ADD CONSTRAINT "meals_fk0" FOREIGN KEY ("restaurantId") REFERENCES "restaurants"("restaurantId");
+ALTER TABLE "meals" ADD CONSTRAINT "meals_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
