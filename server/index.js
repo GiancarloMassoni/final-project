@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 const argon2 = require('argon2');
 const ClientError = require('./client-error');
 const db = new pg.Pool({
-  connectionString: 'postgres://dev:dev@localhost/healthyHacks',
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
