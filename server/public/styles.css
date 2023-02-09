@@ -186,8 +186,12 @@ img {
 
 .auth-form {
   background-color: #f6fbf9;
-  margin-top: 40px;
-  padding: 150px;
+  margin-top: 60px;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  width: 100%;
+  margin-right: 35rem;
+  margin-left: 35rem;
   border-radius: 20px;
 }
 
@@ -232,4 +236,29 @@ img {
 
 .user-name {
   font-size: 3rem;
+}
+
+.title {
+  font-size: 1.5rem;
+}
+
+.sign-text,
+.home {
+  font-size: 1.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 1.1rem;
+  }
+
+  .sign-text,
+  .home {
+    font-size: 1.1rem;
+  }
+
+  .auth-form {
+    margin-right: 0;
+    margin-left: 0;
+  }
 }
