@@ -11,12 +11,12 @@ export default class NavBar extends React.Component {
           <a href="" className='home padding'>Home</a>
           {
             user !== null &&
-            <a href='#profile'>Profile</a>
+            <a href='#profile' className='sign-text'>Profile</a>
           }
         </div>
         <div className='navbar-col text-right'>
           { user !== null &&
-            <a href=""onClick={handleSignOut} className='sign-text padding'> Sign Out</a>
+            <a href=""onClick={handleSignOut} className='sign-text'> Sign Out</a>
           }
           { user === null &&
           <>
