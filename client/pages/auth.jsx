@@ -13,8 +13,7 @@ export default class AuthPage extends React.Component {
       : 'Sign Up';
     return (
       <div className="row">
-        <div className="col-third" />
-        <div className="col-third auth-form">
+        <div className="auth-form text-center">
           <header className="text-center">
             <h2>
               {welcomeMessage}
@@ -27,7 +26,6 @@ export default class AuthPage extends React.Component {
               onSignIn={handleSignIn} />
           </div>
         </div>
-        <div className="col-third" />
       </div>
     );
   }

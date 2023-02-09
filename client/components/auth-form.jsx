@@ -5,7 +5,8 @@ export default class AuthForm extends React.Component {
     super(props);
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      error: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,12 +30,30 @@ export default class AuthForm extends React.Component {
     fetch(`/api/auth/${action}`, req)
       .then(res => res.json())
       .then(result => {
-        if (action === 'sign-up') {
+        const { error } = result;
+        if (result.error) {
+          this.setState({
+            error,
+            username: '',
+            password: ''
+          });
+        }
+        if (action === 'sign-up' && !error) {
           window.location.hash = 'sign-in';
-        } else if (result.user && result.token) {
+        } else if (result.user && result.token && !error) {
           this.props.onSignIn(result);
         }
       });
+  }
+
+  errorMessage() {
+    const { error } = this.state;
+    if (error) {
+      return <p><i className="fa-solid fa-circle-exclamation" /> {error}.</p>;
+    } else {
+      <>
+      </>;
+    }
   }
 
   render() {
@@ -80,6 +99,7 @@ export default class AuthForm extends React.Component {
              />
             </div>
             <div className="padding">
+              {this.errorMessage()}
               <div>
                 <button type="submit" className="form-btn">
                   {submitButtonText}

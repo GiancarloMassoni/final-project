@@ -37,7 +37,7 @@ body {
 }
 
 .navbar-col {
-  flex-basis: 50%;
+  width: 50%;
   padding: 20px;
 }
 
@@ -47,7 +47,11 @@ body {
     text-align: center;
   }
 
-  .col-third {
+  /* .col-third {
     flex-basis: 100%;
-  }
+  } */
+
+  /* .auth-form {
+    flex-basis: 100%;
+  } */
 }
