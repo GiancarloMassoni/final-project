@@ -51,7 +51,7 @@ export default class AuthForm extends React.Component {
     if (error) {
       return <p><i className="fa-solid fa-circle-exclamation" /> {error}.</p>;
     } else {
-      <>
+      return <>
       </>;
     }
   }
