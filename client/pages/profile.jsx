@@ -38,19 +38,46 @@ export default class Profile extends React.Component {
     this.setState({ isDeleting: false, itemDeleting: '' });
   }
 
-  handleXClick(res) {
-    this.setState({ isDeleting: true, itemDeleting: res });
+  handleXClick(item) {
+    this.setState({ isDeleting: true, itemDeleting: item });
   }
 
-  createModal(res) {
-    const restaurant = this.state.itemDeleting;
+  createModal() {
+    const item = this.state.itemDeleting;
+
+    if (typeof item !== 'string') {
+      return (
+        <div>
+          <div className='overlay' />
+          <div className='modal'>
+            <div className='row'>
+              <div className='col-full'>
+                <h2 className='text-center modal-text'>Are you sure you want to remove {item.mealName}?</h2>
+              </div>
+            </div>
+            <div className="row justify-center align-center">
+              <div className="col-full">
+                <div className="row">
+                  <div className="col-modal text-center">
+                    <button className="no-button" onClick={this.handleCancelClick}>Cancel</button>
+                  </div>
+                  <div className="col-modal text-center">
+                    <button className="yes-button" onClick={event => this.removeMeal(item)}>Confirm</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
     return (
       <div>
         <div className='overlay'/>
         <div className='modal'>
           <div className='row'>
             <div className='col-full'>
-              <h2 className='text-center modal-text'>Are you sure you want to remove {restaurant}?</h2>
+              <h2 className='text-center modal-text'>Are you sure you want to remove {item}?</h2>
             </div>
           </div>
           <div className="row justify-center align-center">
@@ -91,6 +118,7 @@ export default class Profile extends React.Component {
   removeMeal(meal) {
     const { mealId } = meal;
     const { mealName } = meal;
+    this.setState({ isDeleting: false });
     fetch(`/api/profile/meals/${mealId}`, {
       method: 'DELETE'
     })
@@ -127,7 +155,7 @@ export default class Profile extends React.Component {
         return <div key={index} className='row padding res-border'>
           <div className="col-full">
             <h2 className='inline'>{res.restaurantName}</h2>
-            <i className="fa-regular fa-circle-xmark  margin-left" onClick={event => this.removeMeal(res)} />
+            <i className="fa-regular fa-circle-xmark  margin-left" onClick={event => this.handleXClick(res)} />
             <h3>{res.mealName}</h3>
           </div>
           <div className="col-half">
