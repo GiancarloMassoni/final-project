@@ -4,9 +4,11 @@ import AppContext from '../lib/app-context';
 export default class Profile extends React.Component {
   constructor(props) {
     super(props);
+    this.createModal = this.createModal.bind(this);
     this.state = {
       restaurants: [],
-      meals: []
+      meals: [],
+      isDeleting: false
     };
   }
 
@@ -29,6 +31,13 @@ export default class Profile extends React.Component {
       .catch(err => console.log('Fetch Get error:', err));
   }
 
+  createModal(res) {
+    this.setState({ isDeleting: true });
+    // console.log(res);
+    // return <p>hello</p>;
+  }
+
+  // eslint-disable-next-line react/no-unused-class-component-methods
   removeRestaurant(restaurant) {
     const { userId } = this.context.user;
 
@@ -66,7 +75,7 @@ export default class Profile extends React.Component {
         return <div key={index} className='padding res-border'>
           <div className='padding'>
             <h2 className='inline'>{res.restaurantName}</h2>
-            <i className="fa-regular fa-circle-xmark  margin-left" onClick={event => this.removeRestaurant(res.restaurantName)} />
+            <i className="fa-regular fa-circle-xmark  margin-left" onClick={event => this.createModal(res.restaurantName)} />
           </div>
           <a href={`#restaurants?restaurant=${res.restaurantName}`}>
             <button className='profile-btn'>Menu</button></a>
@@ -104,7 +113,7 @@ export default class Profile extends React.Component {
     }
   }
 
-  render() {
+  renderPage() {
     const meals = this.state.meals;
     const restaurants = this.state.restaurants;
     return (
@@ -130,6 +139,21 @@ export default class Profile extends React.Component {
             {this.renderMeals()}
           </div>
         </div>
+      </>
+    );
+  }
+
+  render() {
+
+    if (this.state.isDeleting === true) {
+      return (<>
+        {this.createModal()}
+        {this.renderPage()}
+      </>);
+    }
+    return (
+      <>
+        {this.renderPage()}
       </>
     );
   }
