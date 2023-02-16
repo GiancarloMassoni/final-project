@@ -4,9 +4,14 @@ import AppContext from '../lib/app-context';
 export default class Profile extends React.Component {
   constructor(props) {
     super(props);
+    this.createModal = this.createModal.bind(this);
+    this.handleCancelClick = this.handleCancelClick.bind(this);
+    this.removeRestaurant = this.removeRestaurant.bind(this);
     this.state = {
       restaurants: [],
-      meals: []
+      meals: [],
+      isDeleting: false,
+      itemDeleting: ''
     };
   }
 
@@ -29,9 +34,73 @@ export default class Profile extends React.Component {
       .catch(err => console.log('Fetch Get error:', err));
   }
 
-  removeRestaurant(restaurant) {
-    const { userId } = this.context.user;
+  handleCancelClick() {
+    this.setState({ isDeleting: false, itemDeleting: '' });
+  }
 
+  handleXClick(item) {
+    this.setState({ isDeleting: true, itemDeleting: item });
+  }
+
+  createModal() {
+    const item = this.state.itemDeleting;
+
+    if (typeof item !== 'string') {
+      return (
+        <div>
+          <div className='overlay' />
+          <div className='modal'>
+            <div className='row'>
+              <div className='col-full'>
+                <h2 className='text-center modal-text'>Are you sure you want to remove {item.mealName}?</h2>
+              </div>
+            </div>
+            <div className="row justify-center align-center">
+              <div className="col-full">
+                <div className="row">
+                  <div className="col-modal text-center">
+                    <button className="no-button" onClick={this.handleCancelClick}>Cancel</button>
+                  </div>
+                  <div className="col-modal text-center">
+                    <button className="yes-button" onClick={event => this.removeMeal(item)}>Confirm</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div>
+        <div className='overlay'/>
+        <div className='modal'>
+          <div className='row'>
+            <div className='col-full'>
+              <h2 className='text-center modal-text'>Are you sure you want to remove {item}?</h2>
+            </div>
+          </div>
+          <div className="row justify-center align-center">
+            <div className="col-full">
+              <div className="row">
+                <div className="col-modal text-center">
+                  <button className="no-button" onClick={this.handleCancelClick}>Cancel</button>
+                </div>
+                <div className="col-modal text-center">
+                  <button className="yes-button" onClick={this.removeRestaurant}>Confirm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  removeRestaurant() {
+    this.setState({ isDeleting: false });
+    const { userId } = this.context.user;
+    const restaurant = this.state.itemDeleting;
     fetch(`/api/profile/restaurants/${userId}`, {
       method: 'DELETE',
       body: JSON.stringify({ restaurant }),
@@ -49,6 +118,7 @@ export default class Profile extends React.Component {
   removeMeal(meal) {
     const { mealId } = meal;
     const { mealName } = meal;
+    this.setState({ isDeleting: false });
     fetch(`/api/profile/meals/${mealId}`, {
       method: 'DELETE'
     })
@@ -66,7 +136,7 @@ export default class Profile extends React.Component {
         return <div key={index} className='padding res-border'>
           <div className='padding'>
             <h2 className='inline'>{res.restaurantName}</h2>
-            <i className="fa-regular fa-circle-xmark  margin-left" onClick={event => this.removeRestaurant(res.restaurantName)} />
+            <i className="fa-regular fa-circle-xmark  margin-left" onClick={event => this.handleXClick(res.restaurantName)} />
           </div>
           <a href={`#restaurants?restaurant=${res.restaurantName}`}>
             <button className='profile-btn'>Menu</button></a>
@@ -85,7 +155,7 @@ export default class Profile extends React.Component {
         return <div key={index} className='row padding res-border'>
           <div className="col-full">
             <h2 className='inline'>{res.restaurantName}</h2>
-            <i className="fa-regular fa-circle-xmark  margin-left" onClick={event => this.removeMeal(res)} />
+            <i className="fa-regular fa-circle-xmark  margin-left" onClick={event => this.handleXClick(res)} />
             <h3>{res.mealName}</h3>
           </div>
           <div className="col-half">
@@ -104,7 +174,7 @@ export default class Profile extends React.Component {
     }
   }
 
-  render() {
+  renderPage() {
     const meals = this.state.meals;
     const restaurants = this.state.restaurants;
     return (
@@ -130,6 +200,21 @@ export default class Profile extends React.Component {
             {this.renderMeals()}
           </div>
         </div>
+      </>
+    );
+  }
+
+  render() {
+
+    if (this.state.isDeleting === true) {
+      return (<>
+        {this.createModal()}
+        {this.renderPage()}
+      </>);
+    }
+    return (
+      <>
+        {this.renderPage()}
       </>
     );
   }

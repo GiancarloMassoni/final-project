@@ -41,6 +41,14 @@ body {
   padding: 20px;
 }
 
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
 @media screen and (max-width: 768px) {
   .col-half {
     flex-basis: 100%;
