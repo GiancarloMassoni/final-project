@@ -247,6 +247,71 @@ img {
   font-size: 1.5rem;
 }
 
+.modal {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #20c997;
+  border-radius: 5px;
+  z-index: 1;
+  height: 15%;
+  width: 30%;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-shadow: 0 4px 2px -2px black;
+  border: 1px solid white;
+  animation: slide-in 0.35s forwards;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgb(0 0 0 / 60%);
+  z-index: 1;
+}
+
+.yes-button {
+  background-color: white;
+  color: green;
+  border: none;
+  padding: 3px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 2em;
+  box-shadow: 0 4px 2px -2px black;
+}
+
+.no-button {
+  background-color: white;
+  color: red;
+  border: none;
+  padding: 3px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 2em;
+  box-shadow: 0 4px 2px -2px black;
+}
+
+.col-modal {
+  flex-basis: 50%;
+}
+
+@keyframes slide-in {
+  from {
+    top: -200%;
+  }
+
+  to {
+    top: 30%;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .title {
     font-size: 1.1rem;
@@ -260,5 +325,54 @@ img {
   .auth-form {
     margin-right: 0;
     margin-left: 0;
+  }
+
+  .modal-text {
+    font-size: 0.8rem;
+  }
+
+  .modal {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #20c997;
+    border-radius: 5px;
+    z-index: 1;
+    height: 15%;
+    width: 60%;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: 0 4px 2px -2px black;
+    border: 1px solid white;
+    animation: slide-in 0.35s forwards;
+  }
+
+  .col-modal {
+    width: 100%;
+  }
+
+  .yes-button {
+    background-color: white;
+    color: green;
+    border: none;
+    padding: 3px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 2em;
+    box-shadow: 0 4px 2px -2px black;
+  }
+
+  .no-button {
+    background-color: white;
+    color: red;
+    border: none;
+    padding: 3px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 2em;
+    box-shadow: 0 4px 2px -2px black;
   }
 }

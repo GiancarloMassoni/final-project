@@ -5,10 +5,13 @@ export default class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.createModal = this.createModal.bind(this);
+    this.handleCancelClick = this.handleCancelClick.bind(this);
+    this.removeRestaurant = this.removeRestaurant.bind(this);
     this.state = {
       restaurants: [],
       meals: [],
-      isDeleting: false
+      isDeleting: false,
+      itemDeleting: ''
     };
   }
 
@@ -31,16 +34,46 @@ export default class Profile extends React.Component {
       .catch(err => console.log('Fetch Get error:', err));
   }
 
-  createModal(res) {
-    this.setState({ isDeleting: true });
-    // console.log(res);
-    // return <p>hello</p>;
+  handleCancelClick() {
+    this.setState({ isDeleting: false, itemDeleting: '' });
   }
 
-  // eslint-disable-next-line react/no-unused-class-component-methods
-  removeRestaurant(restaurant) {
-    const { userId } = this.context.user;
+  handleXClick(res) {
+    this.setState({ isDeleting: true, itemDeleting: res });
+  }
 
+  createModal(res) {
+    const restaurant = this.state.itemDeleting;
+    return (
+      <div>
+        <div className='overlay'/>
+        <div className='modal'>
+          <div className='row'>
+            <div className='col-full'>
+              <h2 className='text-center modal-text'>Are you sure you want to delete {restaurant}?</h2>
+            </div>
+          </div>
+          <div className="row justify-center align-center">
+            <div className="col-full">
+              <div className="row">
+                <div className="col-modal text-center">
+                  <button className="no-button" onClick={this.handleCancelClick}>Cancel</button>
+                </div>
+                <div className="col-modal text-center">
+                  <button className="yes-button" onClick={this.removeRestaurant}>Confirm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  removeRestaurant() {
+    this.setState({ isDeleting: false });
+    const { userId } = this.context.user;
+    const restaurant = this.state.itemDeleting;
     fetch(`/api/profile/restaurants/${userId}`, {
       method: 'DELETE',
       body: JSON.stringify({ restaurant }),
@@ -75,7 +108,7 @@ export default class Profile extends React.Component {
         return <div key={index} className='padding res-border'>
           <div className='padding'>
             <h2 className='inline'>{res.restaurantName}</h2>
-            <i className="fa-regular fa-circle-xmark  margin-left" onClick={event => this.createModal(res.restaurantName)} />
+            <i className="fa-regular fa-circle-xmark  margin-left" onClick={event => this.handleXClick(res.restaurantName)} />
           </div>
           <a href={`#restaurants?restaurant=${res.restaurantName}`}>
             <button className='profile-btn'>Menu</button></a>
