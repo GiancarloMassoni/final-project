@@ -47,11 +47,11 @@ body {
     text-align: center;
   }
 
-  /* .col-third {
+  .col-third {
     flex-basis: 100%;
-  } */
+  }
 
-  /* .auth-form {
+  .auth-form {
     flex-basis: 100%;
-  } */
+  }
 }

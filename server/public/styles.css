@@ -261,4 +261,8 @@ img {
     margin-right: 0;
     margin-left: 0;
   }
+
+  .navbar {
+    width: 110%;
+  }
 }
