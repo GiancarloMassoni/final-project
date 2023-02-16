@@ -346,12 +346,12 @@ img {
 
 @media screen and (max-width: 768px) {
   .title {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .sign-text,
   .home {
-    font-size: 1.1rem;
+    font-size: 0.8rem;
   }
 
   .auth-form {
@@ -359,7 +359,45 @@ img {
     margin-left: 0;
   }
 
-  .navbar {
-    width: 110%;
+  .address-input {
+    padding: 7px;
+    width: 250px;
+    border: 1px solid #6c757d;
+    box-shadow: 0 5px 8px 01px #888;
+  }
+
+  .modal-text {
+    font-size: 1rem;
+  }
+
+  .yes-button,
+  .yes-button:hover {
+    padding: 3px 10px;
+    font-size: 15px;
+    margin-top: 0;
+  }
+
+  .no-button,
+  .no-button:hover {
+    padding: 3px 10px;
+    font-size: 15px;
+    margin-top: 0;
+  }
+
+  .modal {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #20c997;
+    border-radius: 5px;
+    z-index: 1;
+    height: 20%;
+    width: 80%;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: 0 4px 2px -2px black;
+    border: 1px solid white;
+    animation: slide-in 0.35s forwards;
   }
 }
