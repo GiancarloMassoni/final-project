@@ -356,11 +356,11 @@ img {
     background-color: white;
     color: green;
     border: none;
-    padding: 3px 20px;
+    padding: 3px 10px;
     border-radius: 12px;
-    font-size: 14px;
+    font-size: 10px;
     cursor: pointer;
-    margin-top: 2em;
+    margin-top: 0;
     box-shadow: 0 4px 2px -2px black;
   }
 
@@ -368,11 +368,11 @@ img {
     background-color: white;
     color: red;
     border: none;
-    padding: 3px 20px;
+    padding: 3px 10px;
     border-radius: 12px;
-    font-size: 14px;
+    font-size: 10px;
     cursor: pointer;
-    margin-top: 2em;
+    margin-top: 0;
     box-shadow: 0 4px 2px -2px black;
   }
 }
