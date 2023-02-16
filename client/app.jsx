@@ -80,7 +80,7 @@ export default class App extends React.Component {
             <div className="col-full">
               <div className="row">
                 <div className="col-modal text-center">
-                  <button className="no-button" onClick={this.handleCancelClick}>Cancel</button>
+                  <a><button className="no-button" onClick={this.handleCancelClick}>Cancel</button></a>
                 </div>
                 <div className="col-modal text-center">
                   <a href='' onClick={this.handleSignOutConfirm}><button className="yes-button">Confirm</button></a>

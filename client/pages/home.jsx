@@ -34,8 +34,8 @@ export default function Home() {
       window.alert("No details available for input: '" + place.name + "'");
       return;
     }
-    const longitude = place.geometry.viewport.Ma.lo;
-    const latitude = place.geometry.viewport.Ya.lo;
+    const longitude = place.geometry.viewport.Ia.lo;
+    const latitude = place.geometry.viewport.Ua.lo;
     restaurantReq(longitude, latitude);
 
   };
