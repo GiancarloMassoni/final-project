@@ -50,7 +50,7 @@ export default class Profile extends React.Component {
         <div className='modal'>
           <div className='row'>
             <div className='col-full'>
-              <h2 className='text-center modal-text'>Are you sure you want to delete {restaurant}?</h2>
+              <h2 className='text-center modal-text'>Are you sure you want to remove {restaurant}?</h2>
             </div>
           </div>
           <div className="row justify-center align-center">

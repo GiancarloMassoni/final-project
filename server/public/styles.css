@@ -14,6 +14,10 @@ h1 {
   display: flex;
 }
 
+.navbar a:hover {
+  color: rgb(56, 55, 55);
+}
+
 .search-btn:hover {
   background-color: #6c757d;
   color: white;
@@ -280,7 +284,19 @@ img {
   border: none;
   padding: 3px 20px;
   border-radius: 12px;
-  font-size: 14px;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 2em;
+  box-shadow: 0 4px 2px -2px black;
+}
+
+.yes-button:hover {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 3px 20px;
+  border-radius: 12px;
+  font-size: 20px;
   cursor: pointer;
   margin-top: 2em;
   box-shadow: 0 4px 2px -2px black;
@@ -292,7 +308,19 @@ img {
   border: none;
   padding: 3px 20px;
   border-radius: 12px;
-  font-size: 14px;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 2em;
+  box-shadow: 0 4px 2px -2px black;
+}
+
+.no-button:hover {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 3px 20px;
+  border-radius: 12px;
+  font-size: 20px;
   cursor: pointer;
   margin-top: 2em;
   box-shadow: 0 4px 2px -2px black;
