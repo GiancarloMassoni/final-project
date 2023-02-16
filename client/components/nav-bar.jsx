@@ -16,7 +16,7 @@ export default class NavBar extends React.Component {
         </div>
         <div className='navbar-col text-right'>
           { user !== null &&
-            <a href="#"onClick={handleSignOut} className='sign-text'> Sign Out</a>
+            <a onClick={handleSignOut} className='sign-text'> Sign Out</a>
           }
           { user === null &&
           <>

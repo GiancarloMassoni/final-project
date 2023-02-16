@@ -251,6 +251,10 @@ img {
   font-size: 1.5rem;
 }
 
+.sign-text:hover {
+  cursor: pointer;
+}
+
 .modal {
   position: fixed;
   top: 30%;

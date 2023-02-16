@@ -83,7 +83,7 @@ export default class App extends React.Component {
                   <button className="no-button" onClick={this.handleCancelClick}>Cancel</button>
                 </div>
                 <div className="col-modal text-center">
-                  <button className="yes-button" onClick={this.handleSignOutConfirm}>Confirm</button>
+                  <a href='' onClick={this.handleSignOutConfirm}><button className="yes-button">Confirm</button></a>
                 </div>
               </div>
             </div>
