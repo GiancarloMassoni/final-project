@@ -26,6 +26,7 @@ const initMapScript = () => {
 
 export default function Home() {
   const [locations, setLocations] = useState({ locations: ['no results'] });
+  const [searched, setSearched] = useState({ searched: false });
   const searchInput = useRef(null);
   const context = useContext(AppContext);
   const onChangeAddress = autocomplete => {
@@ -69,8 +70,26 @@ export default function Home() {
   };
 
   const restaurantReq = (lng, lat) => {
-
+    setSearched(true);
     fetch(`https://trackapi.nutritionix.com/v2/locations?ll=${lat},${lng}&distance=30mi&limit=20`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-app-id': process.env.REACT_APP_X_ID_API_KEY,
+        'x-app-key': process.env.REACT_APP_X_KEY_API_KEY
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        setLocations(data);
+      }
+      )
+      // eslint-disable-next-line no-console
+      .catch(err => console.log('Fetch Get error:', err));
+  };
+
+  const noResultsReq = () => {
+    fetch('https://trackapi.nutritionix.com/v2/locations?ll=34.052235,-118.243683&distance=30mi&limit=10', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -85,30 +104,62 @@ export default function Home() {
       .catch(err => console.log('Fetch Get error:', err));
   };
 
-  if (locations.locations.includes('no results') || locations.locations.length === 0) {
-    const locArr = locations.locations.map((loc, index) => <h2 key={index}>{loc.name}</h2>);
+  if (searched.searched !== false) {
+    const LocSetup = (location, index) => {
+
+      const miles = location.distance_km / 0.621371;
+      if (index % 2 === 0) {
+        return <div className='col-half' key={index}>
+          <h2 className='rest-btm'><a href={location.website} target="_blank" rel="noreferrer" className='rest-link'>{location.name}</a></h2>
+          <h3>
+            <a href={`#restaurants?restaurant=${location.name}`}>
+              <button onClick={() => { ContextMenuId(location.name); }} className='menu-btn'>
+                Link to items on menu under 500 calories</button></a>
+          </h3>
+          <h4>{location.address} {location.city} {location.zip} {location.state}</h4>
+          <h4> {miles.toFixed(2)} miles away </h4>
+        </div>
+        ;
+      } else {
+        return <div className='col-half' key={index}>
+          <h2 className='rest-btm'><a href={location.website} target="_blank" rel="noreferrer" className='rest-link'>{location.name}</a></h2>
+          <h3>
+            <a href={`#restaurants?restaurant=${location.name}`}>
+              <button onClick={() => { ContextMenuId(location.name); }} className='menu-btn'>
+                Link to items on menu under 500 calories</button></a>
+          </h3>
+          <h4>{location.address} {location.city} {location.zip} {location.state}</h4>
+          <h4> {miles.toFixed(2)} miles away </h4>
+        </div>;
+      }
+    };
+
+    const locArr = locations.locations.map(LocSetup);
+
     return (
 
       <div>
-        <div className='text-center home-header'> <p>The purpose of this website is to help you lose weight by showing you
-          meals that are under 500 calories at the closest fast food locations to you.</p></div>
+        <div className='text-center'> <h3>The purpose of this website is to help you lose weight by showing you
+          meals that are under 500 calories at the closest fast food locations to you.</h3></div>
         <div className='row text-center'>
           <div className='col-full'>
             <label htmlFor="address" className='block padding'>
               Enter Address to view nearby restaurant menus
             </label>
             <input type="text" placeholder='Address' required className='address-input'
-                ref={searchInput} />
+              ref={searchInput} />
             <i className="fa-sharp fa-solid fa-location-dot" onClick={findMyLocation} />
             <div>
-              <div>{locArr}</div>
+              <h1>Nearby Restaurants</h1>
+              <div className='row'>{locArr}</div>
             </div>
           </div>
         </div>
       </div>
     );
 
-  } else if (locations.locations.length > 1) {
+  } else {
+    noResultsReq();
     const LocSetup = (location, index) => {
 
       const miles = location.distance_km / 0.621371;
@@ -154,7 +205,7 @@ export default function Home() {
                 ref={searchInput}/>
             <i className="fa-sharp fa-solid fa-location-dot" onClick={findMyLocation} />
             <div>
-              <h1>Nearby Restaurants</h1>
+              <h1>Example Restaurants</h1>
               <div className='row'>{locArr}</div>
             </div>
           </div>
