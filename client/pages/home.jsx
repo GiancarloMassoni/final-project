@@ -63,7 +63,22 @@ export default function Home() {
 
   useEffect(() => {
     initMapScript().then(() => { initAutoComplete(); });
-  });
+    if (locations.locations[0] === 'no results') {
+      fetch('https://trackapi.nutritionix.com/v2/locations?ll=34.052235,-118.243683&distance=30mi&limit=10', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-app-id': process.env.REACT_APP_X_ID_API_KEY,
+          'x-app-key': process.env.REACT_APP_X_KEY_API_KEY
+        }
+      })
+        .then(res => res.json())
+        .then(data => setLocations(data))
+      // eslint-disable-next-line no-console
+        .catch(err => console.log('Fetch Get error:', err));
+    }
+  }
+  );
 
   const ContextMenuId = id => {
     context.updateMenuId(id);
@@ -83,22 +98,6 @@ export default function Home() {
       .then(data => {
         setLocations(data);
       }
-      )
-      // eslint-disable-next-line no-console
-      .catch(err => console.log('Fetch Get error:', err));
-  };
-
-  const noResultsReq = () => {
-    fetch('https://trackapi.nutritionix.com/v2/locations?ll=34.052235,-118.243683&distance=30mi&limit=10', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-app-id': process.env.REACT_APP_X_ID_API_KEY,
-        'x-app-key': process.env.REACT_APP_X_KEY_API_KEY
-      }
-    })
-      .then(res => res.json())
-      .then(data => setLocations(data)
       )
       // eslint-disable-next-line no-console
       .catch(err => console.log('Fetch Get error:', err));
@@ -139,8 +138,6 @@ export default function Home() {
     return (
 
       <div>
-        <div className='text-center'> <h3>The purpose of this website is to help you lose weight by showing you
-          meals that are under 500 calories at the closest fast food locations to you.</h3></div>
         <div className='row text-center'>
           <div className='col-full'>
             <label htmlFor="address" className='block padding'>
@@ -150,7 +147,7 @@ export default function Home() {
               ref={searchInput} />
             <i className="fa-sharp fa-solid fa-location-dot" onClick={findMyLocation} />
             <div>
-              <h1>Nearby Restaurants</h1>
+              <h1 className='rest-title'>Nearby Restaurants</h1>
               <div className='row'>{locArr}</div>
             </div>
           </div>
@@ -159,7 +156,7 @@ export default function Home() {
     );
 
   } else {
-    noResultsReq();
+
     const LocSetup = (location, index) => {
 
       const miles = location.distance_km / 0.621371;
@@ -194,8 +191,6 @@ export default function Home() {
     return (
 
       <div>
-        <div className='text-center'> <h3>The purpose of this website is to help you lose weight by showing you
-          meals that are under 500 calories at the closest fast food locations to you.</h3></div>
         <div className='row text-center'>
           <div className='col-full'>
             <label htmlFor="address" className='block padding'>
@@ -205,7 +200,7 @@ export default function Home() {
                 ref={searchInput}/>
             <i className="fa-sharp fa-solid fa-location-dot" onClick={findMyLocation} />
             <div>
-              <h1>Example Restaurants</h1>
+              <h1 className='title-rest'>Example Restaurants</h1>
               <div className='row'>{locArr}</div>
             </div>
           </div>

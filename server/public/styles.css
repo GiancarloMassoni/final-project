@@ -334,6 +334,10 @@ img {
   flex-basis: 50%;
 }
 
+.rest-title {
+  padding: 1rem;
+}
+
 @keyframes slide-in {
   from {
     top: -200%;
