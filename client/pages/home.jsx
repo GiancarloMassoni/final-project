@@ -139,7 +139,7 @@ export default function Home() {
     return (
 
       <div>
-        <div className='text-center'> <h3>The purpose of this website is to help you lose weight by showing you
+        <div className='text-center'> <h3 className='home-text'>The purpose of this website is to help you lose weight by showing you
           meals that are under 500 calories at the closest fast food locations to you.</h3></div>
         <div className='row text-center'>
           <div className='col-full'>
@@ -194,7 +194,7 @@ export default function Home() {
     return (
 
       <div>
-        <div className='text-center'> <h3>The purpose of this website is to help you lose weight by showing you
+        <div className='text-center'> <h3 className='home-text'>The purpose of this website is to help you lose weight by showing you
           meals that are under 500 calories at the closest fast food locations to you.</h3></div>
         <div className='row text-center'>
           <div className='col-full'>
