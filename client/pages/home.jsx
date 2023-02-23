@@ -139,8 +139,6 @@ export default function Home() {
     return (
 
       <div>
-        <div className='text-center'> <h3 className='home-text'>The purpose of this website is to help you lose weight by showing you
-          meals that are under 500 calories at the closest fast food locations to you.</h3></div>
         <div className='row text-center'>
           <div className='col-full'>
             <label htmlFor="address" className='block padding'>
@@ -159,7 +157,7 @@ export default function Home() {
     );
 
   } else {
-    noResultsReq();
+
     const LocSetup = (location, index) => {
 
       const miles = location.distance_km / 0.621371;
@@ -188,14 +186,12 @@ export default function Home() {
         </div>;
       }
     };
-
+    noResultsReq();
     const locArr = locations.locations.map(LocSetup);
 
     return (
 
       <div>
-        <div className='text-center'> <h3 className='home-text'>The purpose of this website is to help you lose weight by showing you
-          meals that are under 500 calories at the closest fast food locations to you.</h3></div>
         <div className='row text-center'>
           <div className='col-full'>
             <label htmlFor="address" className='block padding'>
