@@ -263,7 +263,7 @@ img {
   background-color: #20c997;
   border-radius: 5px;
   z-index: 1;
-  height: 15%;
+  height: 20%;
   width: 30%;
   padding-left: 10px;
   padding-right: 10px;
@@ -288,9 +288,9 @@ img {
   border: none;
   padding: 3px 20px;
   border-radius: 12px;
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
-  margin-top: 2em;
+  margin-top: 0.5em;
   box-shadow: 0 4px 2px -2px black;
 }
 
@@ -300,9 +300,9 @@ img {
   border: none;
   padding: 3px 20px;
   border-radius: 12px;
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
-  margin-top: 2em;
+  margin-top: 0.5em;
   box-shadow: 0 4px 2px -2px black;
 }
 
@@ -312,9 +312,9 @@ img {
   border: none;
   padding: 3px 20px;
   border-radius: 12px;
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
-  margin-top: 2em;
+  margin-top: 0.5em;
   box-shadow: 0 4px 2px -2px black;
 }
 
@@ -324,9 +324,9 @@ img {
   border: none;
   padding: 3px 20px;
   border-radius: 12px;
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
-  margin-top: 2em;
+  margin-top: 0.5em;
   box-shadow: 0 4px 2px -2px black;
 }
 
@@ -336,6 +336,10 @@ img {
 
 .rest-title {
   padding: 1rem;
+}
+
+.modal-text {
+  font-size: 1.2rem;
 }
 
 @keyframes slide-in {
@@ -396,7 +400,7 @@ img {
     background-color: #20c997;
     border-radius: 5px;
     z-index: 1;
-    height: 20%;
+    height: 18%;
     width: 80%;
     padding-left: 10px;
     padding-right: 10px;
