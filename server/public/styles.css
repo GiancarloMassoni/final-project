@@ -342,6 +342,10 @@ img {
   font-size: 1.2rem;
 }
 
+.err-message {
+  color: red;
+}
+
 @keyframes slide-in {
   from {
     top: -200%;

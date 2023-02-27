@@ -49,7 +49,7 @@ export default class AuthForm extends React.Component {
   errorMessage() {
     const { error } = this.state;
     if (error) {
-      return <p><i className="fa-solid fa-circle-exclamation" /> {error}.</p>;
+      return <p className='err-message'><i className="fa-solid fa-circle-exclamation err-message" /> {error}.</p>;
     } else {
       return <>
       </>;
