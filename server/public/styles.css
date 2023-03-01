@@ -346,6 +346,25 @@ img {
   color: red;
 }
 
+.demo-btn {
+  background-color: white;
+  border: solid 2px #20c997;
+  color: #20c997;
+  border-radius: 7px;
+  padding: 4px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px 0.5px #888;
+  font-size: 0.8rem;
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
+  width: 3rem;
+}
+
+.demo-btn:hover {
+  background-color: #20c997;
+  color: white;
+}
+
 @keyframes slide-in {
   from {
     top: -200%;
