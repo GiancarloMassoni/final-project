@@ -109,10 +109,10 @@ export default class AuthForm extends React.Component {
               <a className="form-text" href={alternateActionHref}>
                 <u>{alternatActionText}</u>
               </a>
-              <p>Want to try it out without making an account?</p>
-              <p className='form-text'>Use this <button className='demo-btn'>Demo</button> account!</p>
             </div>
           </form>
+          <p>Want to try it out without making an account?</p>
+          <p className='form-text'>Use this <button className='demo-btn'>Demo</button> account!</p>
         </div>
       </div>
     );
