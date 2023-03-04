@@ -365,6 +365,14 @@ img {
   color: white;
 }
 
+.auth-form-link {
+  color: #20c997;
+}
+
+.auth-form-link:hover {
+  color: #3fa183;
+}
+
 @keyframes slide-in {
   from {
     top: -200%;

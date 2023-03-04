@@ -47,12 +47,16 @@ export default class AuthForm extends React.Component {
       });
   }
 
-  handleDemo() {
+  handleDemo(event) {
+    if (window.location.hash !== 'sign-in') {
+      window.location.hash = 'sign-in';
+    }
     // console.log(this.state);
     this.setState({
       username: 'demo',
       password: 'demo123'
     });
+
   }
 
   errorMessage() {
@@ -116,12 +120,12 @@ export default class AuthForm extends React.Component {
               </div>
               <p className='form-text inline'>{textAction}</p>
               <a className="form-text" href={alternateActionHref}>
-                <u>{alternatActionText}</u>
+                <u className='auth-form-link'>{alternatActionText}</u>
               </a>
+              <p>Want to try it out without making an account?</p>
+              <p className='form-text'>Use this <button className='demo-btn' onClick={handleDemo}>Demo</button> account!</p>
             </div>
           </form>
-          <p>Want to try it out without making an account?</p>
-          <p className='form-text'>Use this <button className='demo-btn' onClick={handleDemo}>Demo</button> account!</p>
         </div>
       </div>
     );
