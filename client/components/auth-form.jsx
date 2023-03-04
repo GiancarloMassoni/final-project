@@ -10,6 +10,7 @@ export default class AuthForm extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDemo = this.handleDemo.bind(this);
   }
 
   handleChange(event) {
@@ -46,6 +47,14 @@ export default class AuthForm extends React.Component {
       });
   }
 
+  handleDemo() {
+    // console.log(this.state);
+    this.setState({
+      username: 'demo',
+      password: 'demo123'
+    });
+  }
+
   errorMessage() {
     const { error } = this.state;
     if (error) {
@@ -58,7 +67,7 @@ export default class AuthForm extends React.Component {
 
   render() {
     const { action } = this.props;
-    const { handleChange, handleSubmit } = this;
+    const { handleChange, handleSubmit, handleDemo } = this;
     const alternateActionHref = action === 'sign-up'
       ? '#sign-in'
       : '#sign-up';
@@ -112,7 +121,7 @@ export default class AuthForm extends React.Component {
             </div>
           </form>
           <p>Want to try it out without making an account?</p>
-          <p className='form-text'>Use this <button className='demo-btn'>Demo</button> account!</p>
+          <p className='form-text'>Use this <button className='demo-btn' onClick={handleDemo}>Demo</button> account!</p>
         </div>
       </div>
     );
