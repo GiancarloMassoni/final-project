@@ -431,8 +431,8 @@ img {
     background-color: #20c997;
     border-radius: 5px;
     z-index: 1;
-    height: 15%;
-    width: 80%;
+    height: 100px;
+    width: 250px;
     padding-left: 10px;
     padding-right: 10px;
     box-shadow: 0 4px 2px -2px black;
