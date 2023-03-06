@@ -1,5 +1,4 @@
 import React from 'react';
-
 export default class AuthForm extends React.Component {
   constructor(props) {
     super(props);
@@ -10,9 +9,18 @@ export default class AuthForm extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDemo = this.handleDemo.bind(this);
+    this.renderDemoBtn = this.renderDemoBtn.bind(this);
+    // this.handleUsernameChange = this.handleUsernameChange.bind(this);
+    // this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
 
+  // handleUsernameChange(event) {
+  //   this.setState({ username: event.target.value });
+  // }
+
   handleChange(event) {
+    // this.setState({ password: event.target.value });
     const { name, value } = event.target;
     this.setState({ [name]: value });
   }
@@ -44,6 +52,29 @@ export default class AuthForm extends React.Component {
           this.props.onSignIn(result);
         }
       });
+  }
+
+  handleDemo(event) {
+    this.setState({
+      username: 'demo',
+      password: 'demo123'
+    });
+    if (window.location.hash !== 'sign-in') {
+      window.location.hash = 'sign-in';
+    }
+
+  }
+
+  renderDemoBtn() {
+    const { handleDemo } = this;
+    if (window.location.hash === '#sign-up') {
+      return (
+        <>
+          <p>Want to try it out without making an account?</p>
+          <p className='form-text'>Use this <button className='demo-btn' onClick={handleDemo}>Demo</button> account!</p>
+        </>
+      );
+    }
   }
 
   errorMessage() {
@@ -85,6 +116,7 @@ export default class AuthForm extends React.Component {
             onChange={handleChange}
             placeholder="Username"
             className="sign-in-form"
+            value={this.state.username}
              />
             </div>
             <div className="mb-3">
@@ -96,6 +128,7 @@ export default class AuthForm extends React.Component {
             onChange={handleChange}
             placeholder="Password"
             className='sign-in-form'
+            value={this.state.password}
              />
             </div>
             <div className="padding">
@@ -107,9 +140,9 @@ export default class AuthForm extends React.Component {
               </div>
               <p className='form-text inline'>{textAction}</p>
               <a className="form-text" href={alternateActionHref}>
-                <u>{alternatActionText}</u>
+                <u className='auth-form-link'>{alternatActionText}</u>
               </a>
-
+              {/* {this.renderDemoBtn()} */}
             </div>
           </form>
         </div>
