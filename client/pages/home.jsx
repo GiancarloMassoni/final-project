@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import AppContext from '../lib/app-context';
-// import parseRoute from '../lib/parse-route';
+import DotLoader from 'react-spinners/DotLoader';
 const apiKey = process.env.REACT_APP_API_KEY;
 const mapApiJs = 'https://maps.googleapis.com/maps/api/js';
 
@@ -27,8 +27,10 @@ const initMapScript = () => {
 export default function Home() {
   const [locations, setLocations] = useState({ locations: ['no results'] });
   const [searched, setSearched] = useState({ searched: false });
+  const [loading, setLoading] = useState(true);
   const searchInput = useRef(null);
   const context = useContext(AppContext);
+
   const onChangeAddress = autocomplete => {
     const place = autocomplete.getPlace();
     if (!place.geometry || !place.geometry.location) {
@@ -39,6 +41,14 @@ export default function Home() {
     const latitude = place.geometry.viewport.Ua.lo;
     restaurantReq(longitude, latitude);
 
+  };
+
+  const Spinner = () => {
+    return (
+      <div style={{ width: '100px', margin: 'auto', display: 'block' }}>
+        <DotLoader color="#52bfd9" size={100} />
+      </div>
+    );
   };
 
   const initAutoComplete = () => {
@@ -73,7 +83,10 @@ export default function Home() {
         }
       })
         .then(res => res.json())
-        .then(data => setLocations(data))
+        .then(data => {
+          setLocations(data);
+          setLoading(false);
+        })
       // eslint-disable-next-line no-console
         .catch(err => console.log('Fetch Get error:', err));
     }
@@ -102,6 +115,10 @@ export default function Home() {
       // eslint-disable-next-line no-console
       .catch(err => console.log('Fetch Get error:', err));
   };
+
+  if (loading) {
+    return <div>{Spinner}</div>;
+  }
 
   if (searched.searched !== false) {
     const LocSetup = (location, index) => {
