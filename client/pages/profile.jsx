@@ -1,6 +1,6 @@
 import React from 'react';
 import AppContext from '../lib/app-context';
-
+import Spinner from '../components/spinner';
 export default class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -11,7 +11,8 @@ export default class Profile extends React.Component {
       restaurants: [],
       meals: [],
       isDeleting: false,
-      itemDeleting: ''
+      itemDeleting: '',
+      loading: true
     };
   }
 
@@ -29,7 +30,7 @@ export default class Profile extends React.Component {
       method: 'GET'
     })
       .then(res => res.json())
-      .then(meals => this.setState({ meals }))
+      .then(meals => this.setState({ meals, loading: false }))
       // eslint-disable-next-line no-console
       .catch(err => console.log('Fetch Get error:', err));
   }
@@ -205,6 +206,9 @@ export default class Profile extends React.Component {
   }
 
   render() {
+    if (this.state.loading) {
+      return Spinner;
+    }
 
     if (this.state.isDeleting === true) {
       return (<>
