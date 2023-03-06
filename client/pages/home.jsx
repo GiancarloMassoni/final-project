@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import AppContext from '../lib/app-context';
-import DotLoader from 'react-spinners/DotLoader';
+import Spinner from '../components/spinner';
 const apiKey = process.env.REACT_APP_API_KEY;
 const mapApiJs = 'https://maps.googleapis.com/maps/api/js';
 
@@ -41,14 +41,6 @@ export default function Home() {
     const latitude = place.geometry.viewport.Ua.lo;
     restaurantReq(longitude, latitude);
 
-  };
-
-  const Spinner = () => {
-    return (
-      <div style={{ width: '100px', margin: 'auto', display: 'block' }}>
-        <DotLoader color="#52bfd9" size={100} />
-      </div>
-    );
   };
 
   const initAutoComplete = () => {
