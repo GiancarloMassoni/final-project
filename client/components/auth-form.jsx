@@ -11,16 +11,9 @@ export default class AuthForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDemo = this.handleDemo.bind(this);
     this.renderDemoBtn = this.renderDemoBtn.bind(this);
-    // this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    // this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
 
-  // handleUsernameChange(event) {
-  //   this.setState({ username: event.target.value });
-  // }
-
   handleChange(event) {
-    // this.setState({ password: event.target.value });
     const { name, value } = event.target;
     this.setState({ [name]: value });
   }
