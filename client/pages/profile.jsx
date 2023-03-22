@@ -206,7 +206,7 @@ export default class Profile extends React.Component {
   }
 
   render() {
-    if (this.state.loading) {
+    if (this.state.loading === true) {
       return Spinner;
     }
 
