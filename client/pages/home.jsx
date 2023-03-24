@@ -38,7 +38,7 @@ export default function Home() {
       return;
     }
     const longitude = place.geometry.viewport.Ga.lo;
-    const latitude = place.geometry.viewport.xa.lo;
+    const latitude = place.geometry.viewport.Va.lo;
     restaurantReq(longitude, latitude);
 
   };
